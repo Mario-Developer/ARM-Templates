@@ -5,15 +5,16 @@
         "alertName": {
            "type": "string",
            "minLength": 1,
+           "defaultValue": "Capacidad de CPU",
            "metadata": {
-                "description": "description"
+                "description": "Nombre de Alerta"
             }
         },
         "alertDescription": {
            "type": "string",
-           "defaultValue": "Thi is a Metric Alert",
+           "defaultValue": " ",
            "metadata": {
-                "description": "description"
+                "description": "Descripción de Alerta"
             }
         },
         "alertSeverity": {
@@ -27,28 +28,28 @@
                4
            ], 
            "metadata": {
-                "description": "description"
+                "description": "Severidad de Alerta"
             }
         },
         "isEnabled": {
            "type": "bool",
            "defaultValue":true,
            "metadata": {
-                "description": "description"
+                "description": "Especifica si la alerta está habilitada"
             }
         },
         "resourceId": {
            "type": "string",
            "minLength": 1,
            "metadata": {
-                "description": "description"
+                "description": "ID de recurso completo del recurso que emite la métrica que se utilizará para la comparación"
             }
         },
         "metricName": {
            "type": "string",
            "minLength": 1,
            "metadata": {
-                "description": "description"
+                "description": "Nombre de la métrica usada en la compración para activar la alerta"
             }
         },
         "operator": {
@@ -63,14 +64,14 @@
                 "LessThanOrEqual"
            ],
            "metadata": {
-                "description": "description"
+                "description": "Operador que compara el valor actual con el valor umbral"
             }
         },
         "threshold": {
            "type": "string",
            "defaultValue": 0,
            "metadata": {
-                "description": "description"
+                "description": "El valor umbral en el que se activa la alerta"
             }
         },
         "timeAggregation": {
@@ -84,7 +85,7 @@
                 "Count"
             ],
             "metadata": {
-                "description": "How the data that is collected should be combined over time."
+                "description": "Cómo se deben combinar los datos que se recopilan con el tiempo"
             }
         },
         "windowSize": {
@@ -101,7 +102,7 @@
                 "PT24H"
             ],
             "metadata": {
-                "description": "Period of time used to monitor alert activity based on the threshold. Must be between one minute and one day. ISO 8601 duration format."
+                "description": "Período de tiempo utilizado para supervisar la actividad de alerta en función del umbral. Debe ser entre un minuto y un día. Formato de duración ISO 8601"
             }
         },
         "evaluationFrequency": {
@@ -115,14 +116,14 @@
                 "PT1H"
             ],
             "metadata": {
-                "description": "how often the metric alert is evaluated represented in ISO 8601 duration format"
+                "description": "Con qué frecuencia se evalúa la alerta métrica representada en formato de duración ISO 8601"
             }
         },
         "actionGroupId": {
             "type": "string",
             "defaultValue": "",
             "metadata": {
-                "description": "The ID of the action group that is triggered when the alert is activated or deactivated"
+                "description": "El ID del grupo de acción que se activa cuando la alerta se activa o desactiva"
             }
         }
     },
