@@ -2,6 +2,12 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "actionGroupName": {
+            "type": "string",
+            "metadata": {
+                "description": "Nombre unico (dentro del grupo de recursos) para el grupo de accion"
+            }
+        },
         "actionGroupShortName": {
             "type": "string",
             "metadata": {
@@ -25,7 +31,7 @@
         {
         "type": "Microsoft.Insights/actionGroups",
         "apiVersion": "2018-03-01",
-        "name": "Notificaciones",
+        "name": "[parameters('actionGroupName')]",
         "location": "Global",
         "properties": {
             "groupShortName": "[parameters('actionGroupShortName')]",
@@ -49,7 +55,7 @@
     "outputs":{
         "actionGroupId":{
             "type":"string",
-            "value":"[resourceId('Microsoft.Insights/actionGroups','Notificaciones')]"
+            "value":"[resourceId('Microsoft.Insights/actionGroups',parameters('actionGroupName'))]"
         }
     }
   }
