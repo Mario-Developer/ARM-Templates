@@ -2,62 +2,55 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-      "actionGroupName": {
-        "type": "string",
-        "metadata": {
-          "description": "Unique name (within the Resource Group) for the Action group."
+        "actionGroupName": {
+            "type": "string",
+            "metadata": {
+            "description": "Nombre único (dentro del grupo de recursos) para el grupo de acción"
+            }
+        },
+        "actionGroupShortName": {
+            "type": "string",
+            "metadata": {
+            "description": "Nombre corto (máximo 12 caracteres) para el grupo Acción"
+            }
+        },
+        "phoneNumber": {
+            "type": "string",
+            "metadata": {
+                "description": "Numero telefónico al cual se enviará la alerta"
+            }
+        },
+        "emailAddress": {
+            "type": "string",
+            "metadata": {
+                "description": "Dirección de correo eectónico a la cual se eviará la alerta"
+            }
         }
-      },
-      "actionGroupShortName": {
-        "type": "string",
-        "metadata": {
-          "description": "Short name (maximum 12 characters) for the Action group."
-        }
-      }
     },
     "resources": [
-      {
+        {
         "type": "Microsoft.Insights/actionGroups",
         "apiVersion": "2018-03-01",
         "name": "[parameters('actionGroupName')]",
         "location": "Global",
         "properties": {
-          "groupShortName": "[parameters('actionGroupShortName')]",
-          "enabled": true,
-          "smsReceivers": [
-            {
-              "name": "contosoSMS",
-              "countryCode": "1",
-              "phoneNumber": "5555551212"
-            },
-            {
-              "name": "contosoSMS2",
-              "countryCode": "1",
-              "phoneNumber": "5555552121"
-            }
-          ],
-          "emailReceivers": [
-            {
-              "name": "contosoEmail",
-              "emailAddress": "devops@contoso.com"
-            },
-            {
-              "name": "contosoEmail2",
-              "emailAddress": "devops2@contoso.com"
-            }
-          ],
-          "webhookReceivers": [
-            {
-              "name": "contosoHook",
-              "serviceUri": "http://requestb.in/1bq62iu1"
-            },
-            {
-              "name": "contosoHook2",
-              "serviceUri": "http://requestb.in/1bq62iu2"
-            }
-          ]
+            "groupShortName": "[parameters('actionGroupShortName')]",
+            "enabled": true,
+            "smsReceivers": [
+                {
+                "name": "contosoSMS",
+                "countryCode": "52",
+                "phoneNumber": "[parameters('phoneNumber')]"
+                }
+            ],
+            "emailReceivers": [
+                {
+                "name": "contosoEmail",
+                "emailAddress": "[parameters('emailAddress')]"
+                }
+            ]
         }
-      }
+        } 
     ],
     "outputs":{
         "actionGroupId":{
