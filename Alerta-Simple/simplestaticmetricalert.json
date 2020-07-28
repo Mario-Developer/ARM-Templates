@@ -151,7 +151,7 @@
                             "dimensions":[],
                             "operator": "[parameters('operator')]",
                             "threshold" : "[parameters('threshold')]",
-                            "timeAggregation": "[parameters('timeAggregation')]",
+                            "timeAggregation": "[parameters('timeAggregation')]"
                         }
                     ]
                 },

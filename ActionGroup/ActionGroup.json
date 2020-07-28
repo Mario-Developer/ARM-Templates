@@ -5,13 +5,13 @@
         "actionGroupName": {
             "type": "string",
             "metadata": {
-            "description": "Nombre único (dentro del grupo de recursos) para el grupo de acción"
+                "description": "Nombre único (dentro del grupo de recursos) para el grupo de acción"
             }
         },
         "actionGroupShortName": {
             "type": "string",
             "metadata": {
-            "description": "Nombre corto (máximo 12 caracteres) para el grupo Acción"
+                "description": "Nombre corto (máximo 12 caracteres) para el grupo Acción"
             }
         },
         "phoneNumber": {
