@@ -5,7 +5,7 @@
         "actionGroupName": {
             "type": "string",
             "metadata": {
-                "description": "Nombre único (dentro del grupo de recursos) para el grupo de acción"
+                "description": "Nombre unico (dentro del grupo de recursos) para el grupo de accion"
             }
         },
         "actionGroupShortName": {
