@@ -12,7 +12,7 @@
         },
         "alertDescription": {
            "type": "string",
-           "defaultValue": "Alerta cuando el CPU alance el 3% de su capacidad",
+           "defaultValue": "El CPU alcanzó la capacidad definida en el umbral",
            "metadata": {
                 "description": "Descripción de Alerta"
             }
