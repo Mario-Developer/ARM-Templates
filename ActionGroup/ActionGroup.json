@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "actionGroupName": {
-            "type": "string",
+            "type": "securestring",
             "metadata": {
                 "description": "Nombre unico (dentro del grupo de recursos) para el grupo de accion"
             }
