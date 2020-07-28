@@ -38,14 +38,14 @@
             "enabled": true,
             "smsReceivers": [
                 {
-                "name": "contosoSMS",
+                "name": "SMS",
                 "countryCode": "52",
                 "phoneNumber": "[parameters('phoneNumber')]"
                 }
             ],
             "emailReceivers": [
                 {
-                "name": "contosoEmail",
+                "name": "Email",
                 "emailAddress": "[parameters('emailAddress')]"
                 }
             ]

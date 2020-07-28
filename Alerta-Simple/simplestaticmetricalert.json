@@ -12,7 +12,7 @@
         },
         "alertDescription": {
            "type": "string",
-           "defaultValue": " ",
+           "defaultValue": "Alerta cuando el CPU alance el 3% de su capacidad",
            "metadata": {
                 "description": "Descripción de Alerta"
             }
@@ -41,12 +41,14 @@
         "resourceId": {
            "type": "string",
            "minLength": 1,
+           "defaultValue": "/subscriptions/fa576709-5768-43a6-80f8-510eefb51258/resourceGroups/JSON-TEMPLATES/providers/Microsoft.Compute/virtualMachines/JSON-VM",
            "metadata": {
                 "description": "ID de recurso completo del recurso que emite la métrica que se utilizará para la comparación"
             }
         },
         "metricName": {
            "type": "string",
+           "defaultValue": "Percentage CPU",
            "minLength": 1,
            "metadata": {
                 "description": "Nombre de la métrica usada en la compración para activar la alerta"
@@ -69,7 +71,7 @@
         },
         "threshold": {
            "type": "string",
-           "defaultValue": 0,
+           "defaultValue": 3,
            "metadata": {
                 "description": "El valor umbral en el que se activa la alerta"
             }
