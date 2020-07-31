@@ -179,6 +179,9 @@
             "location": "global",
             "apiVersion": "2018-03-01",
             "tags": {},
+            "dependsOn": [
+                "[resourceId('Microsoft.Insights/actionGroups/',parameters('actionGroupName'))]"
+            ],
             "properties": {
                 "description": "[parameters('alertDescription')]",
                 "severity": "[parameters('alertSeverity')]",
