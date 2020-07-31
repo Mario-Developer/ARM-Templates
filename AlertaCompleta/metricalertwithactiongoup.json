@@ -1,0 +1,213 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "alertName": {
+           "type": "string",
+           "minLength": 1,
+           "defaultValue": "Capacidad de CPU",
+           "metadata": {
+                "description": "Nombre de Alerta"
+            }
+        },
+        "alertDescription": {
+           "type": "string",
+           "defaultValue": "El CPU alcanzó la capacidad definida en el umbral",
+           "metadata": {
+                "description": "Descripción de Alerta"
+            }
+        },
+        "alertSeverity": {
+           "type": "int",
+           "defaultValue": "3",
+           "allowedValues":[
+               0,
+               1,
+               2,
+               3,
+               4
+           ], 
+           "metadata": {
+                "description": "Severidad de Alerta"
+            }
+        },
+        "isEnabled": {
+           "type": "bool",
+           "defaultValue":true,
+           "metadata": {
+                "description": "Especifica si la alerta está habilitada"
+            }
+        },
+        "resourceId": {
+           "type": "string",
+           "minLength": 1,
+           "defaultValue": "/subscriptions/fa576709-5768-43a6-80f8-510eefb51258/resourceGroups/JSON-TEMPLATES/providers/Microsoft.Compute/virtualMachines/JSON-VM",
+           "metadata": {
+                "description": "ID de recurso completo del recurso que emite la métrica que se utilizará para la comparación"
+            }
+        },
+        "metricName": {
+           "type": "string",
+           "defaultValue": "Percentage CPU",
+           "minLength": 1,
+           "metadata": {
+                "description": "Nombre de la métrica usada en la compración para activar la alerta"
+            }
+        },
+        "operator": {
+           "type": "string",
+           "defaultValue":"GreaterThan",
+           "allowedValues":[
+               "Equals",
+                "NotEquals",
+                "GreaterThan",
+                "GreaterThanOrEqual",
+                "LessThan",
+                "LessThanOrEqual"
+           ],
+           "metadata": {
+                "description": "Operador que compara el valor actual con el valor umbral"
+            }
+        },
+        "threshold": {
+           "type": "string",
+           "defaultValue": 3,
+           "metadata": {
+                "description": "El valor umbral en el que se activa la alerta"
+            }
+        },
+        "timeAggregation": {
+            "type": "string",
+            "defaultValue": "Average",
+            "allowedValues": [
+                "Average",
+                "Minimum",
+                "Maximum",
+                "Total",
+                "Count"
+            ],
+            "metadata": {
+                "description": "Cómo se deben combinar los datos que se recopilan con el tiempo"
+            }
+        },
+        "windowSize": {
+            "type": "string",
+            "defaultValue": "PT5M",
+            "allowedValues": [
+                "PT1M",
+                "PT5M",
+                "PT15M",
+                "PT30M",
+                "PT1H",
+                "PT6H",
+                "PT12H",
+                "PT24H"
+            ],
+            "metadata": {
+                "description": "Período de tiempo utilizado para supervisar la actividad de alerta en función del umbral. Debe ser entre un minuto y un día. Formato de duración ISO 8601"
+            }
+        },
+        "evaluationFrequency": {
+            "type": "string",
+            "defaultValue": "PT1M",
+            "allowedValues": [
+                "PT1M",
+                "PT5M",
+                "PT15M",
+                "PT30M",
+                "PT1H"
+            ],
+            "metadata": {
+                "description": "Con qué frecuencia se evalúa la alerta métrica representada en formato de duración ISO 8601"
+            }
+        },
+        "actionGroupName": {
+            "type": "string",
+            "metadata": {
+                "description": "Nombre unico (dentro del grupo de recursos) para el grupo de accion"
+            }
+        },
+        "actionGroupShortName": {
+            "type": "string",
+            "metadata": {
+                "description": "Nombre corto (máximo 12 caracteres) para el grupo Acción"
+            }
+        },
+        "phoneNumber": {
+            "type": "string",
+            "metadata": {
+                "description": "Numero telefónico al cual se enviará la alerta"
+            }
+        },
+        "emailAddress": {
+            "type": "string",
+            "metadata": {
+                "description": "Dirección de correo eectónico a la cual se eviará la alerta"
+            }
+        }
+    },
+    "variables": {
+        "actionGoupId": "[resourceId('Microsoft.Insights/actionGroups',parameters('actionGroupName'))]"
+    },
+    "resources": [
+        {
+        "type": "Microsoft.Insights/actionGroups",
+        "apiVersion": "2018-03-01",
+        "name": "[parameters('actionGroupName')]",
+        "location": "Global",
+        "properties": {
+            "groupShortName": "[parameters('actionGroupShortName')]",
+            "enabled": true,
+            "smsReceivers": [
+                {
+                "name": "SMS",
+                "countryCode": "52",
+                "phoneNumber": "[parameters('phoneNumber')]"
+                }
+            ],
+            "emailReceivers": [
+                {
+                "name": "Email",
+                "emailAddress": "[parameters('emailAddress')]"
+                }
+            ]
+        }
+        },
+        {
+            "name": "[parameters('alertName')]",
+            "type": "Microsoft.Insights/metricAlerts",
+            "location": "global",
+            "apiVersion": "2018-03-01",
+            "tags": {},
+            "properties": {
+                "description": "[parameters('alertDescription')]",
+                "severity": "[parameters('alertSeverity')]",
+                "enabled": "[parameters('isEnabled')]",
+                "scopes": ["[parameters('resourceId')]"],
+                "evaluationFrequency":"[parameters('evaluationFrequency')]",
+                "windowSize": "[parameters('windowSize')]",
+                "criteria": {
+                    "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria",
+                    "allOf": [
+                        {
+                            "name" : "1st criterion",
+                            "metricName": "[parameters('metricName')]",
+                            "dimensions":[],
+                            "operator": "[parameters('operator')]",
+                            "threshold" : "[parameters('threshold')]",
+                            "timeAggregation": "[parameters('timeAggregation')]",
+                            "criterionType": "StaticThresholdCriterion"                            
+                        }
+                    ]
+                },
+                "actions": [
+                    {
+                        "actionGroupId": "[variables('actionGoupId')]"
+                    }
+                ]
+            }
+        }
+    ],
+    "outputs": {},
+    "functions": []
+}
