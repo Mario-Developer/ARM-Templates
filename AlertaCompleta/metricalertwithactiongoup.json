@@ -70,7 +70,7 @@
             }
         },
         "threshold": {
-           "type": "string",
+           "type": "int",
            "defaultValue": 3,
            "metadata": {
                 "description": "El valor umbral en el que se activa la alerta"
