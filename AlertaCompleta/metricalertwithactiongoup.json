@@ -205,7 +205,7 @@
                 },
                 "actions": [
                     {
-                        "actionGroupId": "[variables('actionGoupId')]"
+                        "actionGroupId": "[resourceId('Microsoft.Insights/actionGroups',parameters('actionGroupName'))]"
                     }
                 ]
             }
