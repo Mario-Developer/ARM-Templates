@@ -198,6 +198,9 @@
             "apiVersion": "2016-06-01",
             "location": "[parameters('location')]",
             "type": "Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems",
+            "dependsOn":[
+                "[concat('Microsoft.RecoveryServices/vaults/', parameters('vaultName'))]"
+            ],
             "copy": {
                 "name": "v2VmsCopy",
                 "count": "[length(parameters('existingVirtualMachines'))]"
