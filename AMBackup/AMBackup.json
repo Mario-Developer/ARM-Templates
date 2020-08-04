@@ -203,7 +203,7 @@
             "location": "[parameters('location')]",
             "type": "Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems",
             "dependsOn":[
-                "[concat('Microsoft.RecoveryServices/vaults/backupPolicies/','huevos')]"
+                "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies',concat(parameters('vaultName'),'/',parameters('policyName')))]"
             ],
             "properties":{
                 "protectedItemType": "[variables('v2VmType')]",
