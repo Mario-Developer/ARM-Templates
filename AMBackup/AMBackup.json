@@ -110,7 +110,10 @@
         "backupFabric": "Azure",
         "v2VmType": "Microsoft.Compute/virtualMachines",
         "v2VmContainer": "iaasvmcontainer;iaasvmcontainerv2;",
-        "v2Vm": "vm;iaasvmcontainerv2;"
+        "v2Vm": "vm;iaasvmcontainerv2;",
+        "protectionContainer": "[concat('iaasvmcontainer;iaasvmcontainerv2;', resourceGroup().name, ';', parameters('existingVirtualMachines'))]",
+        "protectedItem": "[concat('vm;iaasvmcontainerv2;', resourceGroup().name, ';', parameters('existingVirtualMachines'))]"
+
     },
     "resources": [
         {
@@ -200,7 +203,8 @@
         {
             "apiVersion": "2016-12-01",
             "type": "Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems",
-            "name": "PrecitoolVault/Azure/iaasvmcontainer;iaasvmcontainerv2;JSON-TEMPLATES;JSON-VM/vm;iaasvmcontainerv2;JSON-TEMPLATES;JSON-VM",
+            "name": "[concat(parameters('vaultName'), '/', variables('backupFabric'), '/', variables('protectionContainer'), '/', variables('protectedItem'))]",
+            "comments": "PrecitoolVault/Azure/iaasvmcontainer;iaasvmcontainerv2;JSON-TEMPLATES;JSON-VM/vm;iaasvmcontainerv2;JSON-TEMPLATES;JSON-VM",
             "location": "[parameters('location')]",
             "dependsOn":[
                 "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies',parameters('vaultName'),parameters('policyName'))]"
@@ -213,3 +217,4 @@
         }
     ]
   }
+
