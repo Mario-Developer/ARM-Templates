@@ -88,8 +88,8 @@
             }
         },
         "existingVirtualMachines": {
-            "type": "array",
-            "defaultValue": ["JSON-VM"],
+            "type": "string",
+            "defaultValue": "JSON-VM",
             "metadata": {
                 "description": "Array of Azure virtual machines. e.g. [\"vm1\",\"vm2\",\"vm3\"]"
             }
@@ -114,101 +114,101 @@
     },
     "resources": [
         {
-        "type": "Microsoft.RecoveryServices/vaults",
-        "apiVersion": "2015-11-10",
-        "name": "[parameters('vaultName')]",
-        "location": "[parameters('location')]",
-        "sku": {
-            "name": "RS0",
-            "tier": "Standard"
-        },
-        "properties": {}
-        },
-        {
-        "apiVersion": "2016-06-01",
-        "name": "[concat(parameters('vaultName'), '/', parameters('policyName'))]",
-        "type": "Microsoft.RecoveryServices/vaults/backupPolicies",
-        "dependsOn": [
-            "[concat('Microsoft.RecoveryServices/vaults/', parameters('vaultName'))]"
-        ],
-        "location": "[parameters('location')]",
-        "properties": {
-            "backupManagementType": "AzureIaasVM",
-            "instantRpRetentionRangeInDays": "[parameters('instantRpRetentionRangeInDays')]",
-            "schedulePolicy": {
-                "scheduleRunFrequency": "Daily",
-                "scheduleRunDays": null,
-                "scheduleRunTimes": "[parameters('scheduleRunTimes')]",
-                "schedulePolicyType": "SimpleSchedulePolicy"
-            },
-            "retentionPolicy": {
-                "dailySchedule": {
-                    "retentionTimes": "[parameters('scheduleRunTimes')]",
-                    "retentionDuration": {
-                        "count": "[parameters('dailyRetentionDurationCount')]",
-                        "durationType": "Days"
-                    }
-                },
-                "weeklySchedule": {
-                    "daysOfTheWeek": "[parameters('daysOfTheWeek')]",
-                    "retentionTimes": "[parameters('scheduleRunTimes')]",
-                    "retentionDuration": {
-                        "count": "[parameters('weeklyRetentionDurationCount')]",
-                        "durationType": "Weeks"
-                    }
-                },
-                "monthlySchedule": {
-                    "retentionScheduleFormatType": "Daily",
-                    "retentionScheduleDaily": {
-                        "daysOfTheMonth": [
-                            {
-                            "date": 1,
-                            "isLast": false
-                            }
-                        ]
-                    },
-                    "retentionScheduleWeekly": null,
-                    "retentionTimes": "[parameters('scheduleRunTimes')]",
-                    "retentionDuration": {
-                        "count": "[parameters('monthlyRetentionDurationCount')]",
-                        "durationType": "Months"
-                    }
-                },
-                "yearlySchedule": {
-                    "retentionScheduleFormatType": "Daily",
-                    "monthsOfYear": "[parameters('monthsOfYear')]",
-                    "retentionScheduleDaily": {
-                        "daysOfTheMonth": [
-                            {
-                            "date": 1,
-                            "isLast": false
-                            }
-                        ]
-                    },
-                    "retentionScheduleWeekly": null,
-                    "retentionTimes": "[parameters('scheduleRunTimes')]",
-                    "retentionDuration": {
-                        "count": "[parameters('yearlyRetentionDurationCount')]",
-                        "durationType": "Years"
-                    }
-                },
-                "retentionPolicyType": "LongTermRetentionPolicy"
-            },
-            "timeZone": "[parameters('timeZone')]"
-        }
-        },
-        {
-            "name": "PrecitoolVault/Azure/iaasvmcontainer;iaasvmcontainerv2;JSON-TEMPLATES;JSON-VM/vm;iaasvmcontainerv2;JSON-TEMPLATES;JSON-VM",
             "apiVersion": "2016-06-01",
+            "type": "Microsoft.RecoveryServices/vaults",
+            "name": "[parameters('vaultName')]",
             "location": "[parameters('location')]",
+            "sku": {
+                "name": "RS0",
+                "tier": "Standard"
+            },
+            "properties": {}
+        },
+        {
+            "apiVersion": "2016-06-01",
+            "type": "Microsoft.RecoveryServices/vaults/backupPolicies",
+            "name": "[concat(parameters('vaultName'), '/', parameters('policyName'))]",
+            "dependsOn": [
+                "[concat('Microsoft.RecoveryServices/vaults/', parameters('vaultName'))]"
+            ],
+            "location": "[parameters('location')]",
+            "properties": {
+                "backupManagementType": "AzureIaasVM",
+                "instantRpRetentionRangeInDays": "[parameters('instantRpRetentionRangeInDays')]",
+                "schedulePolicy": {
+                    "scheduleRunFrequency": "Daily",
+                    "scheduleRunDays": null,
+                    "scheduleRunTimes": "[parameters('scheduleRunTimes')]",
+                    "schedulePolicyType": "SimpleSchedulePolicy"
+                },
+                "retentionPolicy": {
+                    "dailySchedule": {
+                        "retentionTimes": "[parameters('scheduleRunTimes')]",
+                        "retentionDuration": {
+                            "count": "[parameters('dailyRetentionDurationCount')]",
+                            "durationType": "Days"
+                        }
+                    },
+                    "weeklySchedule": {
+                        "daysOfTheWeek": "[parameters('daysOfTheWeek')]",
+                        "retentionTimes": "[parameters('scheduleRunTimes')]",
+                        "retentionDuration": {
+                            "count": "[parameters('weeklyRetentionDurationCount')]",
+                            "durationType": "Weeks"
+                        }
+                    },
+                    "monthlySchedule": {
+                        "retentionScheduleFormatType": "Daily",
+                        "retentionScheduleDaily": {
+                            "daysOfTheMonth": [
+                                {
+                                "date": 1,
+                                "isLast": false
+                                }
+                            ]
+                        },
+                        "retentionScheduleWeekly": null,
+                        "retentionTimes": "[parameters('scheduleRunTimes')]",
+                        "retentionDuration": {
+                            "count": "[parameters('monthlyRetentionDurationCount')]",
+                            "durationType": "Months"
+                        }
+                    },
+                    "yearlySchedule": {
+                        "retentionScheduleFormatType": "Daily",
+                        "monthsOfYear": "[parameters('monthsOfYear')]",
+                        "retentionScheduleDaily": {
+                            "daysOfTheMonth": [
+                                {
+                                "date": 1,
+                                "isLast": false
+                                }
+                            ]
+                        },
+                        "retentionScheduleWeekly": null,
+                        "retentionTimes": "[parameters('scheduleRunTimes')]",
+                        "retentionDuration": {
+                            "count": "[parameters('yearlyRetentionDurationCount')]",
+                            "durationType": "Years"
+                        }
+                    },
+                    "retentionPolicyType": "LongTermRetentionPolicy"
+                },
+                "timeZone": "[parameters('timeZone')]"
+            }
+        },
+        {
+            "apiVersion": "2016-12-01",
             "type": "Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems",
+            "name": "PrecitoolVault/Azure/iaasvmcontainer;iaasvmcontainerv2;JSON-TEMPLATES;JSON-VM/vm;iaasvmcontainerv2;JSON-TEMPLATES;JSON-VM",
+            "location": "[parameters('location')]",
             "dependsOn":[
-                "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies/',concat(parameters('vaultName'),'/',parameters('policyName')))]"
+                "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies',parameters('vaultName'),parameters('policyName'))]"
             ],
             "properties":{
-                "protectedItemType": "[variables('v2VmType')]",
-                "policyId": "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies/',parameters('vaultName'),parameters('policyName'))]",
-                "sourceResourceId:": "[resourceId(subscription().subscriptionId,parameters('existingVirtualMachinesResourceGroup'),'Microsoft.Compute/virtualMachines/',parameters('existingVirtualMachines'))]"
+                "protectedItemType": "Microsoft.Compute/virtualMachines",
+                "policyId": "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies',parameters('vaultName'),parameters('policyName'))]",
+                "sourceResourceId": "[resourceId('Microsoft.Compute/virtualMachines', parameters('existingVirtualMachines'))]"
             } 
         }
     ]
