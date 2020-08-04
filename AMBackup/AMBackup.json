@@ -198,7 +198,7 @@
         }
         },
         {
-            "name": "Tuputamadre",
+            "name": "Verga/Verga/Verga;Verga;Verga;Verga/Verga;Verga;Verga;Verga",
             "apiVersion": "2016-06-01",
             "location": "[parameters('location')]",
             "type": "Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems",
