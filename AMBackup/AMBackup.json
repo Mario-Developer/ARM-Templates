@@ -203,7 +203,8 @@
             ],
             "copy": {
                 "name": "v2VmsCopy",
-                "count": "[length(parameters('existingVirtualMachines'))]"
+                "count": "[length(parameters('existingVirtualMachines'))]",
+                "mode": "serial"
             },
             "properties":{
                 "protectedItemType": "[variables('v2VmType')]",
