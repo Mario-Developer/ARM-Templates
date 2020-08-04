@@ -198,7 +198,7 @@
         }
         },
         {
-            "name": "Verga/Verga/Verga;Verga;Verga;Verga/Verga;Verga;Verga;Verga",
+            "name": "PrecitoolVault/Azure/iaasvmcontainer;iaasvmcontainerv2;JSON-TEMPLATES;JSON-VM/vm;iaasvmcontainerv2;JSON-TEMPLATES;JSON-VM",
             "apiVersion": "2016-06-01",
             "location": "[parameters('location')]",
             "type": "Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems",
