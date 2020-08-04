@@ -88,15 +88,11 @@
             }
         },
         "existingVirtualMachines": {
-            "type": "string",
-            "defaultValue": "JSON-VM",
+            "type": "array",
+            "defaultValue": ["JSON-VM"],
             "metadata": {
                 "description": "Array of Azure virtual machines. e.g. [\"vm1\",\"vm2\",\"vm3\"]"
             }
-        },
-        "existingVirtualMachinesResourceGroup": {
-            "type": "string",
-            "defaultValue": "JSON-TEMPLATES"
         },
         "location": {
             "type": "string",
@@ -108,9 +104,6 @@
     },
     "variables": {
         "backupFabric": "Azure",
-        "v2VmType": "Microsoft.Compute/virtualMachines",
-        "v2VmContainer": "iaasvmcontainer;iaasvmcontainerv2;",
-        "v2Vm": "vm;iaasvmcontainerv2;",
         "protectionContainer": "[concat('iaasvmcontainer;iaasvmcontainerv2;', resourceGroup().name, ';', parameters('existingVirtualMachines'))]",
         "protectedItem": "[concat('vm;iaasvmcontainerv2;', resourceGroup().name, ';', parameters('existingVirtualMachines'))]"
 
@@ -207,11 +200,11 @@
             "comments": "PrecitoolVault/Azure/iaasvmcontainer;iaasvmcontainerv2;JSON-TEMPLATES;JSON-VM/vm;iaasvmcontainerv2;JSON-TEMPLATES;JSON-VM",
             "location": "[parameters('location')]",
             "dependsOn":[
-                "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies',parameters('vaultName'),parameters('policyName'))]"
+                "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', parameters('vaultName'), parameters('policyName'))]"
             ],
             "properties":{
                 "protectedItemType": "Microsoft.Compute/virtualMachines",
-                "policyId": "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies',parameters('vaultName'),parameters('policyName'))]",
+                "policyId": "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', parameters('vaultName'), parameters('policyName'))]",
                 "sourceResourceId": "[resourceId('Microsoft.Compute/virtualMachines', parameters('existingVirtualMachines'))]"
             } 
         }
