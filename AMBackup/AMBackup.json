@@ -89,6 +89,7 @@
         },
         "existingVirtualMachines": {
             "type": "array",
+            "defaultValue": ["JSON-VM"],
             "metadata": {
                 "description": "Array of Azure virtual machines. e.g. [\"vm1\",\"vm2\",\"vm3\"]"
             }
