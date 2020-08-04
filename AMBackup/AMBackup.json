@@ -75,6 +75,7 @@
         },
         "monthsOfYear": {
             "type": "array",
+            "defaultValue": ["January"],
             "metadata": {
                 "description": "Matriz de meses para la retención anual"
             }
