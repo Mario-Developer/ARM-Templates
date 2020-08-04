@@ -94,6 +94,10 @@
                 "description": "Array of Azure virtual machines. e.g. [\"vm1\",\"vm2\",\"vm3\"]"
             }
         },
+        "existingVirtualMachinesResourceGroup": {
+            "type": "string",
+            "defaultValue": "JSON-TEMPLATES"
+        },
         "location": {
             "type": "string",
             "defaultValue": "[resourceGroup().location]",
@@ -194,7 +198,7 @@
         }
         },
         {
-            "name": "[concat(parameters('vaultName'), '/', variables('backupFabric'), '/', variables('v2VmContainer'), concat(resourceGroup().name,';',parameters('existingVirtualMachines')[copyIndex()]), '/', variables('v2Vm'), concat(resourceGroup().name,';',parameters('existingVirtualMachines')[copyIndex()]))]",
+            "name": "[concat(parameters('vaultName'), '/', variables('backupFabric'), '/', variables('v2VmContainer'), concat(parameters('existingVirtualMachinesResourceGroup'),';',parameters('existingVirtualMachines')[copyIndex()]), '/', variables('v2Vm'), concat(parameters('existingVirtualMachinesResourceGroup'),';',parameters('existingVirtualMachines')[copyIndex()]))]",
             "apiVersion": "2016-06-01",
             "location": "[parameters('location')]",
             "type": "Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems",
@@ -209,7 +213,7 @@
             "properties":{
                 "protectedItemType": "[variables('v2VmType')]",
                 "policyId": "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies',parameters('vaultName'),parameters('policyName'))]",
-                "sourceResourceId:": "[resourceId(subscription().subscriptionId,resourceGroup().name,'Microsoft.Compute/virtualMachines',parameters('existingVirtualMachines')[copyIndex()])]"
+                "sourceResourceId:": "[resourceId(subscription().subscriptionId,parameters('existingVirtualMachinesResourceGroup'),'Microsoft.Compute/virtualMachines',parameters('existingVirtualMachines')[copyIndex()])]"
             } 
         }
     ]
