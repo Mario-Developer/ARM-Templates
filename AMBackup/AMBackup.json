@@ -47,7 +47,7 @@
         },
         "dailyRetentionDurationCount": {
             "type": "int",
-            "defaultValue": "180",
+            "defaultValue": 180,
             "metadata": {
                 "description": "Número de días que desea conservar la copia de seguridad."
             }
@@ -61,14 +61,14 @@
         },
         "weeklyRetentionDurationCount": {
             "type": "int",
-            "defaultValue": "6",
+            "defaultValue": 6,
             "metadata": {
                 "description": "Número de semanas que desea conservar la copia de seguridad "
             }
         },
         "monthlyRetentionDurationCount": {
             "type": "int",
-            "defaultValue": "4",
+            "defaultValue": 4,
             "metadata": {
                 "description": "Número de meses que desea conservar la copia de seguridad "
             }
@@ -81,6 +81,7 @@
         },
         "yearlyRetentionDurationCount": {
             "type": "int",
+            "defaultValue": 1,
             "metadata": {
                 "description": "Número de años que desea conservar la copia de seguridad"
             }
