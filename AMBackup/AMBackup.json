@@ -199,7 +199,7 @@
             "location": "[parameters('location')]",
             "type": "Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems",
             "dependsOn":[
-                "[concat('Microsoft.RecoveryServices/vaults/', parameters('vaultName'))]"
+                "[concat(parameters('vaultName'), '/', parameters('policyName'))]"
             ],
             "copy": {
                 "name": "v2VmsCopy",
