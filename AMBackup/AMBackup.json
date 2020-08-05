@@ -103,11 +103,35 @@
         }
     },
     "variables": {
+        "LAWorkspaceName": "AMBWorkspace",
+        "storageAccountName": "ambstorageaccount",
         "backupFabric": "Azure",
         "v2VmContainer": "iaasvmcontainer;iaasvmcontainerv2;",
         "v2Vm": "vm;iaasvmcontainerv2;"
     },
     "resources": [
+        {
+            "apiVersion": "2017-06-01",
+            "type": "Microsoft.Storage/storageAccounts",
+            "name": "[variables('storageAccountName')]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "Standard_LRS"
+            },
+            "kind": "Storage",
+            "properties": {}
+        },
+        {
+            "apiVersion": "2015-11-01-preview",
+            "type": "Microsoft.OperationalInsights/workspaces",
+            "name": "[variables('LAWorkspaceName')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "sku": {
+                    "name": "Free"
+                }
+            }
+        },
         {
             "apiVersion": "2016-06-01",
             "type": "Microsoft.RecoveryServices/vaults",
@@ -191,6 +215,32 @@
                 },
                 "timeZone": "[parameters('timeZone')]"
             }
+        },
+        {
+            "apiVersion": "2017-05-01-preview",
+            "type": "Microsoft.RecoveryServices/vaults/providers/diagnosticSettings",
+            "name": "[concat(parameters('vaultName'), '/microsoft.insights/', variables('LAWorkspaceName'))]",
+            "properties": {
+            "name": "[variables('LAWorkspaceName')]",
+            "storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
+            "workspaceId": "[resourceId('microsoft.operationalinsights/workspaces/', variables('LAWorkspaceName'))]",
+            "logs": [
+                {
+                    "category": "AzureBackupReport",
+                    "enabled": true,
+                    "retentionPolicy": {
+                        "days": 0,
+                        "enabled": false
+                    }
+                }
+            ],
+            "metrics": []
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.RecoveryServices/vaults/', parameters('vaultName'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
+                "[resourceId('microsoft.operationalinsights/workspaces/', variables('LAWorkspaceName'))]"
+            ]
         },
         {
             "apiVersion": "2016-12-01",
