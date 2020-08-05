@@ -103,8 +103,8 @@
         }
     },
     "variables": {
-        "LAWorkspaceName": "AMBWorkspace",
-        "storageAccountName": "ambstorageaccount",
+        "LAWorkspaceName": "AMBWorkspace1",
+        "storageAccountName": "ambstorageaccount1",
         "backupFabric": "Azure",
         "v2VmContainer": "iaasvmcontainer;iaasvmcontainerv2;",
         "v2Vm": "vm;iaasvmcontainerv2;"
