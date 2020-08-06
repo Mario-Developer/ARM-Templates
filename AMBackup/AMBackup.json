@@ -206,13 +206,10 @@
             "workspaceId": "[resourceId('microsoft.operationalinsights/workspaces/', parameters('LAWorkspaceName'))]",
             "logs": [
                 {
-                    "category": "AzureBackupReport",
-                    "enabled": true,
-                    "retentionPolicy": {
-                        "days": 0,
-                        "enabled": false
-                    }
+                    "category": "AddonAzureBackupJobs",
+                    "enabled": true
                 }
+                
             ],
             "metrics": []
             },
