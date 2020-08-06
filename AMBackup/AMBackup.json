@@ -3,6 +3,20 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "storageAccountName": {
+            "type": "string",
+            "defaultValue": "ambstorageaccount1",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "LAWorkspaceName": {
+            "type": "string",
+            "defaultValue": "AMBWorkSpace1",
+            "metadata": {
+                "description": "description"
+            }
+        },
         "vaultName": {
             "type": "string",
             "defaultValue": "PrecitoolVault",
@@ -73,20 +87,6 @@
                 "description": "Número de meses que desea conservar la copia de seguridad "
             }
         },
-        "monthsOfYear": {
-            "type": "array",
-            "defaultValue": ["January"],
-            "metadata": {
-                "description": "Matriz de meses para la retención anual"
-            }
-        },
-        "yearlyRetentionDurationCount": {
-            "type": "int",
-            "defaultValue": 1,
-            "metadata": {
-                "description": "Número de años que desea conservar la copia de seguridad"
-            }
-        },
         "VirtualMachines": {
             "type": "array",
             "defaultValue": ["JSON-VM","JSON-VM2","JSON-VML"],
@@ -103,8 +103,6 @@
         }
     },
     "variables": {
-        "LAWorkspaceName": "AMBWorkspace1",
-        "storageAccountName": "ambstorageaccount1",
         "backupFabric": "Azure",
         "v2VmContainer": "iaasvmcontainer;iaasvmcontainerv2;",
         "v2Vm": "vm;iaasvmcontainerv2;"
@@ -113,7 +111,7 @@
         {
             "apiVersion": "2017-06-01",
             "type": "Microsoft.Storage/storageAccounts",
-            "name": "[variables('storageAccountName')]",
+            "name": "[parameters('storageAccountName')]",
             "location": "[parameters('location')]",
             "sku": {
                 "name": "Standard_LRS"
@@ -124,7 +122,7 @@
         {
             "apiVersion": "2015-11-01-preview",
             "type": "Microsoft.OperationalInsights/workspaces",
-            "name": "[variables('LAWorkspaceName')]",
+            "name": "[parameters('LAWorkspaceName')]",
             "location": "[parameters('location')]",
             "properties": {
                 "sku": {
@@ -193,24 +191,6 @@
                             "durationType": "Months"
                         }
                     },
-                    "yearlySchedule": {
-                        "retentionScheduleFormatType": "Daily",
-                        "monthsOfYear": "[parameters('monthsOfYear')]",
-                        "retentionScheduleDaily": {
-                            "daysOfTheMonth": [
-                                {
-                                "date": 1,
-                                "isLast": false
-                                }
-                            ]
-                        },
-                        "retentionScheduleWeekly": null,
-                        "retentionTimes": "[parameters('scheduleRunTimes')]",
-                        "retentionDuration": {
-                            "count": "[parameters('yearlyRetentionDurationCount')]",
-                            "durationType": "Years"
-                        }
-                    },
                     "retentionPolicyType": "LongTermRetentionPolicy"
                 },
                 "timeZone": "[parameters('timeZone')]"
@@ -219,11 +199,11 @@
         {
             "apiVersion": "2017-05-01-preview",
             "type": "Microsoft.RecoveryServices/vaults/providers/diagnosticSettings",
-            "name": "[concat(parameters('vaultName'), '/microsoft.insights/', variables('LAWorkspaceName'))]",
+            "name": "[concat(parameters('vaultName'), '/microsoft.insights/', parameters('LAWorkspaceName'))]",
             "properties": {
-            "name": "[variables('LAWorkspaceName')]",
-            "storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
-            "workspaceId": "[resourceId('microsoft.operationalinsights/workspaces/', variables('LAWorkspaceName'))]",
+            "name": "[parameters('LAWorkspaceName')]",
+            "storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]",
+            "workspaceId": "[resourceId('microsoft.operationalinsights/workspaces/', parameters('LAWorkspaceName'))]",
             "logs": [
                 {
                     "category": "AzureBackupReport",
@@ -238,8 +218,8 @@
             },
             "dependsOn": [
                 "[resourceId('Microsoft.RecoveryServices/vaults/', parameters('vaultName'))]",
-                "[resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
-                "[resourceId('microsoft.operationalinsights/workspaces/', variables('LAWorkspaceName'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]",
+                "[resourceId('microsoft.operationalinsights/workspaces/', parameters('LAWorkspaceName'))]"
             ]
         },
         {
