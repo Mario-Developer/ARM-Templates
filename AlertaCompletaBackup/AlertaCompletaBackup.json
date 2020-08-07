@@ -117,7 +117,8 @@
                 }
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Insights/actionGroups',parameters('actionGroupName'))]"
+                "[resourceId('microsoft.operationalinsights/workspaces/', parameters('LAWorkspaceName'))]",
+                "[resourceId('Microsoft.Insights/actionGroups/',parameters('actionGroupName'))]"
             ]
         }
     ]
