@@ -9,6 +9,13 @@
                 "description": "description"
             }
         },
+        "VirtualMachines": {
+            "type": "array",
+            "defaultValue": ["JSON-VM2","JSON-VML"],
+            "metadata": {
+                "description": "Arreglo de Máquinas Virtuales Azure. e.g. [\"vm1\",\"vm2\",\"vm3\"]"
+            }
+        },
         "actionGroupName": {
             "type": "string",
             "defaultValue": "Notificaciones",
@@ -40,6 +47,13 @@
         "backupalertName": {
             "type": "string",
             "defaultValue": "Impementaciones de Backup correctas",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "cpualertName": {
+            "type": "string",
+            "defaultValue": "Uso de CPU mayor a 60%",
             "metadata": {
                 "description": "description"
             }
@@ -118,6 +132,47 @@
             },
             "dependsOn": [
                 "[resourceId('microsoft.operationalinsights/workspaces/', parameters('LAWorkspaceName'))]",
+                "[resourceId('Microsoft.Insights/actionGroups/',parameters('actionGroupName'))]"
+            ]
+        },
+        {
+            "apiVersion": "2018-03-01",
+            "type": "Microsoft.Insights/metricAlerts",
+            "name": "[concat(parameters('cpualertName'), '/', concat(parameters('VirtualMachines')[copyIndex()]))]",
+            "location": "[parameters('location')]",
+            "tags": {},
+            "copy": {
+                "name": "vmcopy",
+                "count": "[length(parameters('VirtualMachines'))]"
+            },
+            "properties": {
+                "description": "Alerta que informa cuando el CPU sobrepasa el 60% de su capacidad",
+                "severity": 4,
+                "enabled": true,
+                "scopes": "[resourceId('Microsoft.Compute/virtualMachines', parameters('VirtualMachines')[copyIndex()])]",
+                "evaluationFrequency":"PT1M",
+                "windowSize": "PT5M",
+                "criteria": {
+                    "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria",
+                    "allOf": [
+                        {
+                            "name" : "1st criterion",
+                            "metricName": "Percentage CPU",
+                            "dimensions":[],
+                            "operator": "GreaterThan",
+                            "threshold" : 2,
+                            "timeAggregation": "Average",
+                            "criterionType": "StaticThresholdCriterion"                            
+                        }
+                    ]
+                },
+                "actions": [
+                    {
+                        "actionGroupId": "[resourceId('Microsoft.Insights/actionGroups',parameters('actionGroupName'))]"
+                    }
+                ]
+            },
+            "dependsOn": [
                 "[resourceId('Microsoft.Insights/actionGroups/',parameters('actionGroupName'))]"
             ]
         }

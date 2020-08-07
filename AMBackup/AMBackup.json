@@ -12,23 +12,23 @@
         },
         "VirtualMachines": {
             "type": "array",
-            "defaultValue": ["JSON-VM","JSON-VM2","JSON-VML"],
+            "defaultValue": ["JSON-VM2","JSON-VML"],
             "metadata": {
-                "description": "Array of Azure virtual machines. e.g. [\"vm1\",\"vm2\",\"vm3\"]"
+                "description": "Arreglo de Máquinas Virtuales Azure. e.g. [\"vm1\",\"vm2\",\"vm3\"]"
             }
         },
         "storageAccountName": {
             "type": "string",
             "defaultValue": "ambstorageaccount1",
             "metadata": {
-                "description": "description"
+                "description": "Nombre de una cuenta de almacenamiento"
             }
         },
         "LAWorkspaceName": {
             "type": "string",
             "defaultValue": "AMBWorkSpace1",
             "metadata": {
-                "description": "description"
+                "description": "Nombre de un espacio de trabajo Log Analytics"
             }
         },
         "vaultName": {
