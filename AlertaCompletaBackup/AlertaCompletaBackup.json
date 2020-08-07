@@ -138,7 +138,7 @@
         {
             "apiVersion": "2018-03-01",
             "type": "Microsoft.Insights/metricAlerts",
-            "name": "[parameters('backupalertName')]",
+            "name": "[parameters('cpualertName')]",
             "location": "global",
             "tags": {},
             "copy": {
