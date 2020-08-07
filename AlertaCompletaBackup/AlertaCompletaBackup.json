@@ -18,7 +18,7 @@
         },
         "actionGroupShortName": {
             "type": "string",
-            "defaultValue": "Notificaciones",
+            "defaultValue": "Notif",
             "metadata": {
                 "description": "description"
             }
@@ -115,7 +115,10 @@
                         "threshold": 1
                     }
                 }
-            }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Insights/actionGroups',parameters('actionGroupName'))]"
+            ]
         }
     ]
 }
