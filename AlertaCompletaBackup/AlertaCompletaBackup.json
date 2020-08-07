@@ -149,7 +149,9 @@
                 "description": "Alerta que informa cuando el CPU sobrepasa el 60% de su capacidad",
                 "severity": 4,
                 "enabled": true,
-                "scopes": "[resourceId('Microsoft.Compute/virtualMachines', parameters('VirtualMachines')[copyIndex()])]",
+                "scopes": [
+                    "[resourceId('Microsoft.Compute/virtualMachines/', parameters('VirtualMachines')[copyIndex()])]"
+                ],
                 "evaluationFrequency":"PT1M",
                 "windowSize": "PT5M",
                 "criteria": {
