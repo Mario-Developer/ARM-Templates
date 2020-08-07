@@ -3,6 +3,20 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Ubicación para todos los recursos"
+            }
+        },
+        "VirtualMachines": {
+            "type": "array",
+            "defaultValue": ["JSON-VM","JSON-VM2","JSON-VML"],
+            "metadata": {
+                "description": "Array of Azure virtual machines. e.g. [\"vm1\",\"vm2\",\"vm3\"]"
+            }
+        },
         "storageAccountName": {
             "type": "string",
             "defaultValue": "ambstorageaccount1",
@@ -87,40 +101,30 @@
                 "description": "Número de meses que desea conservar la copia de seguridad "
             }
         },
-        "VirtualMachines": {
-            "type": "array",
-            "defaultValue": ["JSON-VM","JSON-VM2","JSON-VML"],
-            "metadata": {
-                "description": "Array of Azure virtual machines. e.g. [\"vm1\",\"vm2\",\"vm3\"]"
-            }
-        },
-        "location": {
-            "type": "string",
-            "defaultValue": "[resourceGroup().location]",
-            "metadata": {
-                "description": "Ubicación para todos los recursos"
-            }
-        },
         "actionGroupName": {
             "type": "string",
+            "defaultValue": "Notificaciones",
             "metadata": {
-                "description": "Nombre unico (dentro del grupo de recursos) para el grupo de accion"
+                "description": "Nombre único (dentro del grupo de recursos) para el grupo de accion"
             }
         },
         "actionGroupShortName": {
             "type": "string",
+            "defaultValue": "Notif",
             "metadata": {
                 "description": "Nombre corto (máximo 12 caracteres) para el grupo Acción"
             }
         },
         "phoneNumber": {
             "type": "string",
+            "defaultValue": "2221918832",
             "metadata": {
                 "description": "Numero telefónico al cual se enviará la alerta"
             }
         },
         "emailAddress": {
             "type": "string",
+            "defaultValue": "mgomez@precitool.com",
             "metadata": {
                 "description": "Dirección de correo eectónico a la cual se eviará la alerta"
             }
@@ -225,29 +229,6 @@
                     "retentionPolicyType": "LongTermRetentionPolicy"
                 },
                 "timeZone": "[parameters('timeZone')]"
-            }
-        },
-        {
-            "type": "Microsoft.Insights/actionGroups",
-            "apiVersion": "2018-03-01",
-            "name": "[parameters('actionGroupName')]",
-            "location": "Global",
-            "properties": {
-                "groupShortName": "[parameters('actionGroupShortName')]",
-                "enabled": true,
-                "smsReceivers": [
-                    {
-                    "name": "SMS",
-                    "countryCode": "52",
-                    "phoneNumber": "[parameters('phoneNumber')]"
-                    }
-                ],
-                "emailReceivers": [
-                    {
-                    "name": "Email",
-                    "emailAddress": "[parameters('emailAddress')]"
-                    }
-                ]
             }
         },
         {
