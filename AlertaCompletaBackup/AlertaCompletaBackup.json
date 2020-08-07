@@ -141,16 +141,12 @@
             "name": "[parameters('cpualertName')]",
             "location": "global",
             "tags": {},
-            "copy": {
-                "name": "vmcopy",
-                "count": "[length(parameters('VirtualMachines'))]"
-            },
             "properties": {
                 "description": "Alerta que informa cuando el CPU sobrepasa el 60% de su capacidad",
                 "severity": 4,
                 "enabled": true,
                 "scopes": [
-                    "[resourceId('Microsoft.Compute/virtualMachines/', parameters('VirtualMachines')[copyIndex()])]"
+                    "[resourceId('Microsoft.Compute/virtualMachines/', parameters('VirtualMachines'))]"
                 ],
                 "evaluationFrequency":"PT1M",
                 "windowSize": "PT5M",
