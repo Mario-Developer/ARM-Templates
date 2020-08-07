@@ -1,0 +1,121 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "LAWorkspaceName": {
+            "type": "string",
+            "defaultValue": "AlertamientoWS1",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "actionGroupName": {
+            "type": "string",
+            "defaultValue": "Notificaciones",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "actionGroupShortName": {
+            "type": "string",
+            "defaultValue": "Notificaciones",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "phoneNumber": {
+            "type": "string",
+            "defaultValue": "2221918832",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "emailAddress": {
+            "type": "string",
+            "defaultValue": "mgomez@precitool.com",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "backupalertName": {
+            "type": "string",
+            "defaultValue": "Impementaciones de Backup correctas",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Location for the alert. Must be the same location as the workspace."
+            }
+        }
+    },
+    "resources":[ 
+        {
+            "apiVersion": "2015-11-01-preview",
+            "type": "Microsoft.OperationalInsights/workspaces",
+            "name": "[parameters('LAWorkspaceName')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "sku": {
+                    "name": "Free"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Insights/actionGroups",
+            "apiVersion": "2018-03-01",
+            "name": "[parameters('actionGroupName')]",
+            "location": "Global",
+            "properties": {
+                "groupShortName": "[parameters('actionGroupShortName')]",
+                "enabled": true,
+                "smsReceivers": [
+                    {
+                    "name": "SMS",
+                    "countryCode": "52",
+                    "phoneNumber": "[parameters('phoneNumber')]"
+                    }
+                ],
+                "emailReceivers": [
+                    {
+                    "name": "Email",
+                    "emailAddress": "[parameters('emailAddress')]"
+                    }
+                ]
+            }
+        },
+        {
+            "apiVersion": "2018-04-16",
+            "type":"Microsoft.Insights/scheduledQueryRules",
+            "name": "[parameters('backupalertName')]",
+            "location": "[parameters('location')]",
+            "properties":{
+                "description": "Sample log query alert",
+                "enabled": "true",
+                "source": {
+                    "query": "Event | where EventLevelName == \"Error\" | summarize count() by Computer",
+                    "dataSourceId": "[resourceId('microsoft.operationalinsights/workspaces/', parameters('LAWorkspaceName'))]",
+                    "queryType":"ResultCount"
+                },
+                "schedule":{
+                    "frequencyInMinutes": 15,
+                    "timeWindowInMinutes": 60
+                },
+                "action":{
+                    "odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
+                    "severity": "4",
+                    "aznsAction":{
+                        "actionGroup": "[resourceId('Microsoft.Insights/actionGroups',parameters('actionGroupName'))]"
+                    },
+                    "trigger":{
+                        "thresholdOperator": "GreaterThan",
+                        "threshold": 1
+                    }
+                }
+            }
+        }
+    ]
+}

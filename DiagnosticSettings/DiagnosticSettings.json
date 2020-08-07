@@ -34,8 +34,8 @@
         "properties": {}
       },
       {
+          "apiVersion": "2015-11-01-preview",
         "type": "Microsoft.OperationalInsights/workspaces",
-        "apiVersion": "2015-11-01-preview",
         "name": "[variables('LAWorkspaceName')]",
         "location": "East US",
         "properties": {
@@ -45,8 +45,8 @@
         }
       },
       {
+          "apiVersion": "2017-06-01",
         "type": "Microsoft.Storage/storageAccounts",
-        "apiVersion": "2017-06-01",
         "name": "[variables('storageAccountName')]",
         "location": "[parameters('location')]",
         "sku": {
@@ -56,9 +56,9 @@
         "properties": {}
       },
       {
+          "apiVersion": "2017-05-01-preview",
         "type": "Microsoft.RecoveryServices/vaults/providers/diagnosticSettings",
         "name": "[concat(parameters('vaultName'), '/microsoft.insights/', variables('LAWorkspaceName'))]",
-        "apiVersion": "2017-05-01-preview",
         "properties": {
           "name": "[variables('LAWorkspaceName')]",
           "storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",

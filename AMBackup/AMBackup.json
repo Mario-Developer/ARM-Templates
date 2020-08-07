@@ -100,6 +100,37 @@
             "metadata": {
                 "description": "Ubicación para todos los recursos"
             }
+        },
+        "actionGroupName": {
+            "type": "string",
+            "metadata": {
+                "description": "Nombre unico (dentro del grupo de recursos) para el grupo de accion"
+            }
+        },
+        "actionGroupShortName": {
+            "type": "string",
+            "metadata": {
+                "description": "Nombre corto (máximo 12 caracteres) para el grupo Acción"
+            }
+        },
+        "phoneNumber": {
+            "type": "string",
+            "metadata": {
+                "description": "Numero telefónico al cual se enviará la alerta"
+            }
+        },
+        "emailAddress": {
+            "type": "string",
+            "metadata": {
+                "description": "Dirección de correo eectónico a la cual se eviará la alerta"
+            }
+        },
+        "backupalertName": {
+            "type": "string",
+            "defaultValue": "Implementación de Backup correcta",
+            "metadata": {
+                "description": "description"
+            }
         }
     },
     "variables": {
@@ -197,6 +228,29 @@
             }
         },
         {
+            "type": "Microsoft.Insights/actionGroups",
+            "apiVersion": "2018-03-01",
+            "name": "[parameters('actionGroupName')]",
+            "location": "Global",
+            "properties": {
+                "groupShortName": "[parameters('actionGroupShortName')]",
+                "enabled": true,
+                "smsReceivers": [
+                    {
+                    "name": "SMS",
+                    "countryCode": "52",
+                    "phoneNumber": "[parameters('phoneNumber')]"
+                    }
+                ],
+                "emailReceivers": [
+                    {
+                    "name": "Email",
+                    "emailAddress": "[parameters('emailAddress')]"
+                    }
+                ]
+            }
+        },
+        {
             "apiVersion": "2017-05-01-preview",
             "type": "Microsoft.RecoveryServices/vaults/providers/diagnosticSettings",
             "name": "[concat(parameters('vaultName'), '/microsoft.insights/', parameters('LAWorkspaceName'))]",
@@ -225,9 +279,6 @@
             "name": "[concat(parameters('vaultName'), '/', variables('backupFabric'), '/', variables('v2VmContainer'), concat(resourceGroup().name, ';', parameters('VirtualMachines')[copyIndex()]), '/', variables('v2Vm'), concat(resourceGroup().name, ';', parameters('VirtualMachines')[copyIndex()]))]",
             "comments": "PrecitoolVault/Azure/iaasvmcontainer;iaasvmcontainerv2;JSON-TEMPLATES;JSON-VM/vm;iaasvmcontainerv2;JSON-TEMPLATES;JSON-VM",
             "location": "[parameters('location')]",
-            "dependsOn":[
-                "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', parameters('vaultName'), parameters('policyName'))]"
-            ],
             "copy": {
                 "name": "v2VmsCopy",
                 "count": "[length(parameters('VirtualMachines'))]"
@@ -236,7 +287,10 @@
                 "protectedItemType": "Microsoft.Compute/virtualMachines",
                 "policyId": "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', parameters('vaultName'), parameters('policyName'))]",
                 "sourceResourceId": "[resourceId('Microsoft.Compute/virtualMachines', parameters('VirtualMachines')[copyIndex()])]"
-            } 
+            },
+            "dependsOn":[
+                "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', parameters('vaultName'), parameters('policyName'))]"
+            ]
         }
     ]
   }
