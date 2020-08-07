@@ -138,7 +138,7 @@
         {
             "apiVersion": "2018-03-01",
             "type": "Microsoft.Insights/metricAlerts",
-            "name": "[concat(parameters('cpualertName'),concat(parameters('VirtualMachines')[copyIndex()]))]",
+            "name": "[parameters('backupalertName')]",
             "location": "global",
             "tags": {},
             "copy": {
