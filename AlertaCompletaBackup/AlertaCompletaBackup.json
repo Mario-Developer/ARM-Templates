@@ -108,7 +108,7 @@
                     "odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
                     "severity": "4",
                     "aznsAction":{
-                        "actionGroup": "[resourceId('Microsoft.Insights/actionGroups',parameters('actionGroupName'))]"
+                        "actionGroup": "[array(resourceId('Microsoft.Insights/actionGroups',parameters('actionGroupName')))]"
                     },
                     "trigger":{
                         "thresholdOperator": "GreaterThan",
