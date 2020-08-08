@@ -161,7 +161,7 @@
                 "severity": 4,
                 "enabled": true,
                 "scopes": [
-                    "[resourceId('Microsoft.Compute/virtualMachines/', parameters('VMW'))]"
+                    "[subscriptionResourceId('Microsoft.Compute/virtualMachines', parameters('VMW'))]"
                 ],
                 "evaluationFrequency":"PT1M",
                 "windowSize": "PT5M",
