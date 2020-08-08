@@ -16,6 +16,20 @@
                 "description": "Arreglo de Máquinas Virtuales Azure. e.g. [\"vm1\",\"vm2\",\"vm3\"]"
             }
         },
+        "VMW": {
+            "type": "string",
+            "defaultValue": "JSON-VM2",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "VML": {
+            "type": "string",
+            "defaultValue": "JSON-VML",
+            "metadata": {
+                "description": "description"
+            }
+        },
         "actionGroupName": {
             "type": "string",
             "defaultValue": "Notificaciones",
@@ -63,6 +77,17 @@
             "defaultValue": "[resourceGroup().location]",
             "metadata": {
                 "description": "Location for the alert. Must be the same location as the workspace."
+            }
+        }
+    },
+    "variables": {
+        "virtualmachinesId":{
+            "copy":{
+                "name": "virtualmachinesId",
+                "count": "[length(parameters('VirtualMachines'))]",
+                "input":{
+                    "id": "[resourceId('Microsoft.Compute/virtualMachines', parameters('VirtualMachines')[copyIndex()])]"
+                }
             }
         }
     },
@@ -147,7 +172,8 @@
                 "severity": 4,
                 "enabled": true,
                 "scopes": [
-                    "[array(resourceId('Microsoft.Compute/virtualMachines/', parameters('VirtualMachines')))]"
+                    "[resourceId('Microsoft.Compute/virtualMachines/', parameters('VMW'))]",
+                    "[resourceId('Microsoft.Compute/virtualMachines/', parameters('VML'))]"
                 ],
                 "evaluationFrequency":"PT1M",
                 "windowSize": "PT5M",
@@ -172,7 +198,7 @@
                 ]
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Insights/actionGroups/',parameters('actionGroupName'))]"
+                "[resourceId('Microsoft.Insights/actionGroups/', parameters('actionGroupName'))]"
             ]
         }
     ]
