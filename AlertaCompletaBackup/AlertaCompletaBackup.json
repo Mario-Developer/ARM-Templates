@@ -80,17 +80,6 @@
             }
         }
     },
-    "variables": {
-        "virtualmachinesId":{
-            "copy":{
-                "name": "virtualmachinesId",
-                "count": "[length(parameters('VirtualMachines'))]",
-                "input":{
-                    "id": "[resourceId('Microsoft.Compute/virtualMachines', parameters('VirtualMachines')[copyIndex()])]"
-                }
-            }
-        }
-    },
     "resources":[ 
         {
             "apiVersion": "2015-11-01-preview",
