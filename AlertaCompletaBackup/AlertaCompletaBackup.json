@@ -11,7 +11,10 @@
         },
         "VirtualMachines": {
             "type": "array",
-            "defaultValue": ["JSON-VM2","JSON-VML"],
+            "defaultValue": [
+                "JSON-VM2",
+                "JSON-VML"
+            ],
             "metadata": {
                 "description": "Arreglo de Máquinas Virtuales Azure. e.g. [\"vm1\",\"vm2\",\"vm3\"]"
             }
