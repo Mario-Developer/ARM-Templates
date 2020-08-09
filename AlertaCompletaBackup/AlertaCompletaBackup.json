@@ -12,8 +12,7 @@
         "VirtualMachines": {
             "type": "array",
             "defaultValue": [
-                "JSON-VM2",
-                "JSON-VML"
+                "JSON-VM2"
             ],
             "metadata": {
                 "description": "Arreglo de Máquinas Virtuales Azure. e.g. [\"vm1\",\"vm2\",\"vm3\"]"
@@ -180,9 +179,8 @@
                 ],
                 "evaluationFrequency": "PT1M",
                 "windowSize": "PT5M",
-                "targetResourceType": "Microsoft.Compute/virtualMachines",
                 "criteria": {
-                    "odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria",
+                    "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria",
                     "allOf": [
                         {
                             "criterionType": "StaticThresholdCriterion",
@@ -202,7 +200,6 @@
                 ]
             },
             "dependsOn": [
-                
                 "[resourceId('Microsoft.Insights/actionGroups/', parameters('actionGroupName'))]"
             ]
         }
