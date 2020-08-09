@@ -98,7 +98,7 @@
                 "description": "Alerta CPU",
                 "severity": 4,
                 "enabled": true,
-                "scopes": "[parameters('VirtualMachinesRG')]",
+                "scopes": "[parameters('VirtualMachines')]",
                 "targetResourceRegion": "[resourceGroup().location]",
                 "targetResourceType": "Microsoft.Compute/virtualMachines",
                 "evaluationFrequency": "PT1M",
