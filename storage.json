@@ -21,6 +21,16 @@
                 "description": "Arreglo de Máquinas Virtuales Azure. e.g. [\"vm1\",\"vm2\",\"vm3\"]"
             }
         },
+        "vm": {
+            "type": "array",
+            "defaultValue": [
+                "JSON-VM2",
+                "JSON-VML"
+            ],
+            "metadata": {
+                "description": "description"
+            }
+        },
         "actionGroupName": {
             "type": "string",
             "defaultValue": "Notificaciones",
@@ -98,6 +108,11 @@
                 "description": "Alerta CPU",
                 "severity": 4,
                 "enabled": true,
+                "copy":{
+                    "name":"scopes",
+                    "count": "[length(parameters('vm'))]",
+                    "input": "[resourceId(subscription().id, resourceGroup().name, 'Microsoft.Compute/virtualMachines', parameters('vm')[copyIndex('scopes')])]"
+                },
                 "scopes": "[parameters('VirtualMachines')]",
                 "targetResourceRegion": "[resourceGroup().location]",
                 "targetResourceType": "Microsoft.Compute/virtualMachines",
