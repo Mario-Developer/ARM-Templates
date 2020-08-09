@@ -81,7 +81,13 @@
         }
     },
     "variables": {
-        "VMid": "/subscriptions/fa576709-5768-43a6-80f8-510eefb51258/resourceGroups/JSON-TEMPLATES/providers/Microsoft.Compute/virtualMachines/JSON-VM2"
+        "copy":{
+            "name": "vmid",
+            "count": "[length(parameters('VirtualMachines'))]",
+            "input":{
+                "id": "[resourceId(subscription().subscriptionId, resourceGroup().name, 'Microsoft.Compute/virtualMachines', parameters('VirtualMachines')[copyIndex('vmid')])]"
+            }
+        }        
     },
     "resources":[ 
         {
