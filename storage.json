@@ -111,7 +111,7 @@
                 "copy":{
                     "name":"scopes",
                     "count": "[length(parameters('vm'))]",
-                    "input": "[resourceId(subscription().id, resourceGroup().name, 'Microsoft.Compute/virtualMachines', parameters('vm')[copyIndex('scopes')])]"
+                    "input": "[resourceId('Microsoft.Compute/virtualMachines', parameters('vm')[copyIndex('scopes')])]"
                 },
                 "scopes": "[parameters('VirtualMachines')]",
                 "targetResourceRegion": "[resourceGroup().location]",
