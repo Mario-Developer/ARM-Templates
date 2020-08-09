@@ -100,7 +100,7 @@
                 "evaluationFrequency": "PT1M",
                 "windowSize": "PT5M",
                 "criteria": {
-                    "odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria",
+                    "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria",
                     "allOf": [
                         {
                             "criterionType": "StaticThresholdCriterion",
