@@ -189,5 +189,11 @@
                 "[resourceId('Microsoft.Insights/actionGroups/', parameters('actionGroupName'))]"
             ]
         }
-    ]
+    ],
+    "outputs":{
+        "message": {
+            "type": "string",
+            "value": "[string(resourceId('Microsoft.Insights/actionGroups',parameters('actionGroupName')))]"
+        }
+    }
 }
