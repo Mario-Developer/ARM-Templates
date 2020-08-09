@@ -119,40 +119,6 @@
             }
         },
         {
-            "apiVersion": "2018-04-16",
-            "type":"Microsoft.Insights/scheduledQueryRules",
-            "name": "[parameters('backupalertName')]",
-            "location": "[parameters('location')]",
-            "properties":{
-                "description": "Sample log query alert",
-                "enabled": "true",
-                "source": {
-                    "query": "Event | where EventLevelName == \"Error\" | summarize count() by Computer",
-                    "dataSourceId": "[resourceId('microsoft.operationalinsights/workspaces/', parameters('LAWorkspaceName'))]",
-                    "queryType":"ResultCount"
-                },
-                "schedule":{
-                    "frequencyInMinutes": 15,
-                    "timeWindowInMinutes": 60
-                },
-                "action":{
-                    "odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
-                    "severity": "4",
-                    "aznsAction":{
-                        "actionGroup": "[array(resourceId('Microsoft.Insights/actionGroups',parameters('actionGroupName')))]"
-                    },
-                    "trigger":{
-                        "thresholdOperator": "GreaterThan",
-                        "threshold": 1
-                    }
-                }
-            },
-            "dependsOn": [
-                "[resourceId('microsoft.operationalinsights/workspaces/', parameters('LAWorkspaceName'))]",
-                "[resourceId('Microsoft.Insights/actionGroups/',parameters('actionGroupName'))]"
-            ]
-        },
-        {
             "apiVersion": "2018-03-01",
             "type": "Microsoft.Insights/metricAlerts",
             "name": "[parameters('cpualertName')]",
@@ -189,6 +155,7 @@
                 ]
             },
             "dependsOn": [
+                
                 "[resourceId('Microsoft.Insights/actionGroups/', parameters('actionGroupName'))]"
             ]
         }
