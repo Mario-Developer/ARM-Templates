@@ -168,8 +168,16 @@
                 "description": "Alerta CPU",
                 "severity": 4,
                 "enabled": true,
-                "scopes": [
-                    "[resourceId(subscription().subscriptionId, resourceGroup().name, 'Microsoft.Compute/virtualMachines', parameters('VirtualMachines'))]"
+                "copy":[
+                    {
+                        "name": "virtualmachinesId",
+                        "count": "[length(parameters('VirtualMachines'))]",
+                        "input":{
+                            "scopes":[
+                                "[resourceId(subscription().subscriptionId, resourceGroup().name, 'Microsoft.Compute/virtualMachines', parameters('VirtualMachines')[copyIndex()])]"
+                            ]
+                        }
+                    }
                 ],
                 "evaluationFrequency": "PT1M",
                 "windowSize": "PT5M",
