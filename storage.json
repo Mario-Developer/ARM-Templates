@@ -2,25 +2,6 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "VirtualMachinesRG": {
-            "type": "array",
-            "defaultValue": [
-                "/subscriptions/fa576709-5768-43a6-80f8-510eefb51258/resourceGroups/JSON-TEMPLATES"
-            ],
-            "metadata": {
-                "description": "description"
-            }
-        },
-        "VirtualMachines": {
-            "type": "array",
-            "defaultValue": [
-                "/subscriptions/fa576709-5768-43a6-80f8-510eefb51258/resourceGroups/JSON-TEMPLATES/providers/Microsoft.Compute/virtualMachines/JSON-VM2",
-                "/subscriptions/fa576709-5768-43a6-80f8-510eefb51258/resourceGroups/JSON-TEMPLATES/providers/Microsoft.Compute/virtualMachines/JSON-VML"
-            ],
-            "metadata": {
-                "description": "Arreglo de Máquinas Virtuales Azure. e.g. [\"vm1\",\"vm2\",\"vm3\"]"
-            }
-        },
         "vm": {
             "type": "array",
             "defaultValue": [
@@ -55,13 +36,6 @@
         "emailAddress": {
             "type": "string",
             "defaultValue": "mgomez@precitool.com",
-            "metadata": {
-                "description": "description"
-            }
-        },
-        "backupalertName": {
-            "type": "string",
-            "defaultValue": "Impementaciones de Backup correctas",
             "metadata": {
                 "description": "description"
             }
