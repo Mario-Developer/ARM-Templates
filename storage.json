@@ -2,9 +2,9 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "LAWorkspaceName": {
-            "type": "string",
-            "defaultValue": "AlertamientoWS1",
+        "VirtualMachinesRG": {
+            "type": "array",
+            "defaultValue": [],
             "metadata": {
                 "description": "description"
             }
@@ -96,9 +96,7 @@
                 "description": "Alerta CPU",
                 "severity": 4,
                 "enabled": true,
-                "scopes": [
-                    "[parameters('VirtualMachines')]"
-                ],
+                "scopes": "[parameters('VirtualMachines')]",
                 "evaluationFrequency": "PT1M",
                 "windowSize": "PT5M",
                 "criteria": {
