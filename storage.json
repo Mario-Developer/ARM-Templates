@@ -115,7 +115,6 @@
                         "input": "[resourceId('Microsoft.Compute/virtualMachines', parameters('vm')[copyIndex('scopes')])]"
                     }
                 ],
-                "scopes": "[parameters('VirtualMachines')]",
                 "targetResourceRegion": "[resourceGroup().location]",
                 "targetResourceType": "Microsoft.Compute/virtualMachines",
                 "evaluationFrequency": "PT1M",
