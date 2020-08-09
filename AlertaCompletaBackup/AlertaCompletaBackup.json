@@ -81,7 +81,7 @@
         }
     },
     "variables": {
-        "VMid": "[resourceId(subscription().subscriptionId, resourceGroup().name, 'Microsoft.Compute/virtualMachines', parameters('VMW'))]"
+        "VMid": "/subscriptions/fa576709-5768-43a6-80f8-510eefb51258/resourceGroups/JSON-TEMPLATES/providers/Microsoft.Compute/virtualMachines/JSON-VM2"
     },
     "resources":[ 
         {
