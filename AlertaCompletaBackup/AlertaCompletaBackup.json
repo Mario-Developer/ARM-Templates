@@ -161,7 +161,8 @@
                         "name": "scopes",
                         "count": "[length(parameters('VirtualMachines'))]",
                         "mode": "serial",
-                        "input": ["[resourceId('Microsoft.Compute/virtualMachines', parameters('VirtualMachines')[copyIndex('scopes')])]"]
+
+                        "input": "CHINGA TU MADRE"
                     }
                 ],
                 "evaluationFrequency": "PT1M",
