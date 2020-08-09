@@ -12,7 +12,7 @@
         "VirtualMachines": {
             "type": "array",
             "defaultValue": [
-                "JSON-VM2"
+                "JSON-VML"
             ],
             "metadata": {
                 "description": "Arreglo de Máquinas Virtuales Azure. e.g. [\"vm1\",\"vm2\",\"vm3\"]"
@@ -159,7 +159,7 @@
                 "copy":[
                     {
                         "name": "scopes",
-                        "count": "[length(parameters('VirtualMachines'))]",
+                        "count": 1,
                         "input": ["[resourceId('Microsoft.Compute/virtualMachines', parameters('VirtualMachines')[copyIndex('scopes')])]"]
                     }
                 ],
