@@ -174,7 +174,7 @@
                     {
                         "name": "scopes",
                         "count": "[length(parameters('VirtualMachines'))]",
-                        "input": "[resourceId(subscription().subscriptionId, resourceGroup().name, 'Microsoft.Compute/virtualMachines', parameters('VirtualMachines')[copyIndex('scopes')])]"
+                        "input": "[resourceId('Microsoft.Compute/virtualMachines', parameters('VirtualMachines')[copyIndex('scopes')])]"
                     }
                 ],
                 "evaluationFrequency": "PT1M",
@@ -195,7 +195,7 @@
                 },
                 "actions": [
                     {
-                        "actionGroupId": "[resourceId('Microsoft.Insights/actionGroups',parameters('actionGroupName'))]"
+                        "actionGroupId": "[resourceId('Microsoft.Insights/actionGroups', parameters('actionGroupName'))]"
                     }
                 ]
             },
