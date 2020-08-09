@@ -18,16 +18,16 @@
                 "description": "Arreglo de Máquinas Virtuales Azure. e.g. [\"vm1\",\"vm2\",\"vm3\"]"
             }
         },
-        "VMW": {
-            "type": "string",
-            "defaultValue": "JSON-VM2",
-            "metadata": {
-                "description": "description"
-            }
-        },
-        "VML": {
-            "type": "string",
-            "defaultValue": "JSON-VML",
+        "M": {
+            "type": "array",
+            "defaultValue": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+            ],
             "metadata": {
                 "description": "description"
             }
@@ -174,7 +174,7 @@
                     {
                         "name": "scopes",
                         "count": "[length(parameters('VirtualMachines'))]",
-                        "input": "[resourceId('Microsoft.Compute/virtualMachines', parameters('VirtualMachines')[copyIndex('scopes')])]"
+                        "input": "[resourceId('Microsoft.Compute/virtualMachines', parameters('M')[copyIndex('scopes')])]"
                     }
                 ],
                 "evaluationFrequency": "PT1M",
