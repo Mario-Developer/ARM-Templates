@@ -160,7 +160,7 @@
                     {
                         "name": "scopes",
                         "count": "[length(parameters('VirtualMachines'))]",
-                        "input": "[resourceId('Microsoft.Compute/virtualMachines', parameters('VirtualMachines')[copyIndex('scopes')])]"
+                        "input": ["[resourceId('Microsoft.Compute/virtualMachines', parameters('VirtualMachines')[copyIndex('scopes')])]"]
                     }
                 ],
                 "evaluationFrequency": "PT1M",
