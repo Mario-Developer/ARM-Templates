@@ -159,7 +159,8 @@
                 "copy":[
                     {
                         "name": "scopes",
-                        "count": 1,
+                        "count": "[length(parameters('VirtualMachines'))]",
+                        "mode": "serial",
                         "input": ["[resourceId('Microsoft.Compute/virtualMachines', parameters('VirtualMachines')[copyIndex('scopes')])]"]
                     }
                 ],
