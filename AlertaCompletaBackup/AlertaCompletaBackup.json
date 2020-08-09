@@ -18,13 +18,6 @@
                 "description": "Arreglo de Máquinas Virtuales Azure. e.g. [\"vm1\",\"vm2\",\"vm3\"]"
             }
         },
-        "M": {
-            "type": "string",
-            "defaultValue": "H",
-            "metadata": {
-                "description": "description"
-            }
-        },
         "actionGroupName": {
             "type": "string",
             "defaultValue": "Notificaciones",
@@ -167,13 +160,13 @@
                     {
                         "name": "scopes",
                         "count": "[length(parameters('VirtualMachines'))]",
-                        "input": "[resourceId('Microsoft.Compute/virtualMachines', parameters('M')[copyIndex('scopes')])]"
+                        "input": "[resourceId('Microsoft.Compute/virtualMachines', parameters('VirtualMachines')[copyIndex('scopes')])]"
                     }
                 ],
                 "evaluationFrequency": "PT1M",
                 "windowSize": "PT5M",
                 "criteria": {
-                    "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria",
+                    "odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria",
                     "allOf": [
                         {
                             "criterionType": "StaticThresholdCriterion",
