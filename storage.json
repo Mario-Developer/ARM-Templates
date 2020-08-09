@@ -19,13 +19,6 @@
                     "id": "[concat(parameters('VM'),copyIndex())]"
                 }
             }
-        },
-        "copy":{
-            "name": "loop",
-            "count": "[length(parameters('VM'))]",
-            "input":{
-                "id": "[concat(parameters('VM'), copyIndex())]"
-            }
         }
     },
     "resources": [],
