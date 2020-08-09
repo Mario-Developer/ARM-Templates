@@ -2,47 +2,37 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "storageAccountName": {
-            "type": "string",
-            "defaultValue": "storag0100",
-            "metadata": {
-                "description": "description"
-            }
-        },
-        "location": {
-            "type": "string",
-            "defaultValue": "[resourceGroup().location]",
-            "metadata": {
-                "description": "description"
-            }
-        },
         "VM": {
-            "type": "string",
-            "defaultValue": "JSON-VM2",
+            "type": "array",
+            "defaultValue": ["JSON-VM2","JSON-VML"],
             "metadata": {
                 "description": "description"
             }
         }
     },
-    "functions": [],
-    "variables": {},
-    "resources": [
-        {
-            "apiVersion": "2017-06-01",
-            "type": "Microsoft.Storage/storageAccounts",
-            "name": "[parameters('storageAccountName')]",
-            "location": "[parameters('location')]",
-            "sku": {
-                "name": "Standard_LRS"
-            },
-            "kind": "Storage",
-            "properties": {}
+    "variables": {
+        "vmArray":{
+            "copy":{
+                "name": "loop",
+                "count": "[length(parameters('VM'))]",
+                "input":{
+                    "id": "[concat(parameters('VM'),copyIndex())]"
+                }
+            }
+        },
+        "copy":{
+            "name": "loop",
+            "count": "[length(parameters('VM'))]",
+            "input":{
+                "id": "[concat(parameters('VM'), copyIndex())]"
+            }
         }
-    ],
+    },
+    "resources": [],
     "outputs": {
         "message": {
-            "type": "string",
-            "value": "[resourceId(subscription().subscriptionId, resourceGroup().name, 'Microsoft.Compute/virtualMachines', parameters('VM'))]"
+            "type": "array",
+            "value": "[variables('vmArray')]"
         }
     }
 }

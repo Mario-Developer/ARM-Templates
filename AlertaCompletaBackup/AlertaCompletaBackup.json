@@ -85,7 +85,7 @@
             "name": "vmid",
             "count": "[length(parameters('VirtualMachines'))]",
             "input":{
-                "id": "[resourceId(subscription().subscriptionId, resourceGroup().name, 'Microsoft.Compute/virtualMachines', parameters('VirtualMachines')[copyIndex('vmid')])]"
+                "id": "[resourceId(subscription().subscriptionId, resourceGroup().name, 'Microsoft.Compute/virtualMachines',parameters('VirtualMachines')[copyIndex('vmid')])]"
             }
         }        
     },
