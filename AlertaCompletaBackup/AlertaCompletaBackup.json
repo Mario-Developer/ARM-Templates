@@ -170,13 +170,9 @@
                 "enabled": true,
                 "copy":[
                     {
-                        "name": "virtualmachinesId",
+                        "name": "scopes",
                         "count": "[length(parameters('VirtualMachines'))]",
-                        "input":{
-                            "scopes":[
-                                "[resourceId(subscription().subscriptionId, resourceGroup().name, 'Microsoft.Compute/virtualMachines', parameters('VirtualMachines')[copyIndex()])]"
-                            ]
-                        }
+                        "input": "[resourceId(subscription().subscriptionId, resourceGroup().name, 'Microsoft.Compute/virtualMachines', parameters('VirtualMachines')[copyIndex('scopes')])]"
                     }
                 ],
                 "evaluationFrequency": "PT1M",
