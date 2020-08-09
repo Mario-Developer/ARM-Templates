@@ -26,7 +26,7 @@
         },
         "LAWorkspaceName": {
             "type": "string",
-            "defaultValue": "AMBWorkSpace1",
+            "defaultValue": "AMBWorkSpace01",
             "metadata": {
                 "description": "Nombre de un espacio de trabajo Log Analytics"
             }
@@ -133,7 +133,14 @@
             "type": "string",
             "defaultValue": "Implementación de Backup correcta",
             "metadata": {
-                "description": "description"
+                "description": "Nombre de la alerta del Backup"
+            }
+        },
+        "cpualertName": {
+            "type": "string",
+            "defaultValue": "Procentaje de CPU mayor a 60",
+            "metadata": {
+                "description": "Nombre de la alerta del CPU"
             }
         }
     },
@@ -271,6 +278,85 @@
             },
             "dependsOn":[
                 "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', parameters('vaultName'), parameters('policyName'))]"
+            ]
+        },
+        {
+            "apiVersion": "2018-03-01",
+            "type": "Microsoft.Insights/metricAlerts",
+            "name": "[parameters('cpualertName')]",
+            "location": "global",
+            "tags": {},
+            "properties": {
+                "description": "Alerta CPU mayor a 60",
+                "severity": 4,
+                "enabled": true,
+                "copy":[
+                    {
+                        "name":"scopes",
+                        "count": "[length(parameters('VirtualMachines'))]",
+                        "input": "[resourceId('Microsoft.Compute/virtualMachines', parameters('VirtualMachines')[copyIndex('scopes')])]"
+                    }
+                ],
+                "targetResourceRegion": "[resourceGroup().location]",
+                "targetResourceType": "Microsoft.Compute/virtualMachines",
+                "evaluationFrequency": "PT1M",
+                "windowSize": "PT5M",
+                "criteria": {
+                    "odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria",
+                    "allOf": [
+                        {
+                            "criterionType": "StaticThresholdCriterion",
+                            "name" : "1st criterion",
+                            "metricName": "Percentage CPU",
+                            "dimensions":[],
+                            "operator": "GreaterThan",
+                            "threshold" : 2,
+                            "timeAggregation": "Average"                        
+                        }
+                    ]
+                },
+                "actions": [
+                    {
+                        "actionGroupId": "[resourceId('Microsoft.Insights/actionGroups', parameters('actionGroupName'))]"
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Insights/actionGroups/', parameters('actionGroupName'))]"
+            ]
+        },
+        {
+            "apiVersion": "2018-04-16",
+            "type":"Microsoft.Insights/scheduledQueryRules",
+            "name": "[parameters('backupalertName')]",
+            "location": "[parameters('location')]",
+            "properties":{
+                "description": "Sample log query alert",
+                "enabled": "true",
+                "source": {
+                    "query": "Event | where EventLevelName == \"Error\" | summarize count() by Computer",
+                    "dataSourceId": "[resourceId('microsoft.operationalinsights/workspaces/', parameters('LAWorkspaceName'))]",
+                    "queryType":"ResultCount"
+                },
+                "schedule":{
+                    "frequencyInMinutes": 15,
+                    "timeWindowInMinutes": 60
+                },
+                "action":{
+                    "odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
+                    "severity": "4",
+                    "aznsAction":{
+                        "actionGroup": "[array(resourceId('Microsoft.Insights/actionGroups',parameters('actionGroupName')))]"
+                    },
+                    "trigger":{
+                        "thresholdOperator": "GreaterThan",
+                        "threshold": 1
+                    }
+                }
+            },
+            "dependsOn": [
+                "[resourceId('microsoft.operationalinsights/workspaces/', parameters('LAWorkspaceName'))]",
+                "[resourceId('Microsoft.Insights/actionGroups/',parameters('actionGroupName'))]"
             ]
         }
     ]
