@@ -281,6 +281,29 @@
             ]
         },
         {
+            "type": "Microsoft.Insights/actionGroups",
+            "apiVersion": "2018-03-01",
+            "name": "[parameters('actionGroupName')]",
+            "location": "Global",
+            "properties": {
+                "groupShortName": "[parameters('actionGroupShortName')]",
+                "enabled": true,
+                "smsReceivers": [
+                    {
+                    "name": "SMS",
+                    "countryCode": "52",
+                    "phoneNumber": "[parameters('phoneNumber')]"
+                    }
+                ],
+                "emailReceivers": [
+                    {
+                    "name": "Email",
+                    "emailAddress": "[parameters('emailAddress')]"
+                    }
+                ]
+            }
+        },
+        {
             "apiVersion": "2018-03-01",
             "type": "Microsoft.Insights/metricAlerts",
             "name": "[parameters('cpualertName')]",
