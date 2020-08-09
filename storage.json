@@ -2,30 +2,131 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "VM": {
+        "LAWorkspaceName": {
+            "type": "string",
+            "defaultValue": "AlertamientoWS1",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "VirtualMachines": {
             "type": "array",
-            "defaultValue": ["JSON-VM2","JSON-VML"],
+            "defaultValue": [
+                "/subscriptions/fa576709-5768-43a6-80f8-510eefb51258/resourceGroups/JSON-TEMPLATES/providers/Microsoft.Compute/virtualMachines/JSON-VM2",
+                "/subscriptions/fa576709-5768-43a6-80f8-510eefb51258/resourceGroups/JSON-TEMPLATES/providers/Microsoft.Compute/virtualMachines/JSON-VML"
+            ],
+            "metadata": {
+                "description": "Arreglo de Máquinas Virtuales Azure. e.g. [\"vm1\",\"vm2\",\"vm3\"]"
+            }
+        },
+        "actionGroupName": {
+            "type": "string",
+            "defaultValue": "Notificaciones",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "actionGroupShortName": {
+            "type": "string",
+            "defaultValue": "Notif",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "phoneNumber": {
+            "type": "string",
+            "defaultValue": "2221918832",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "emailAddress": {
+            "type": "string",
+            "defaultValue": "mgomez@precitool.com",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "backupalertName": {
+            "type": "string",
+            "defaultValue": "Impementaciones de Backup correctas",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "cpualertName": {
+            "type": "string",
+            "defaultValue": "CPU",
             "metadata": {
                 "description": "description"
             }
         }
     },
-    "variables": {
-        "vmArray":{
-            "copy":{
-                "name": "loop",
-                "count": "[length(parameters('VM'))]",
-                "input":{
-                    "id": "[concat(parameters('VM'),copyIndex())]"
-                }
+    "resources":[ 
+        {
+            "type": "Microsoft.Insights/actionGroups",
+            "apiVersion": "2018-03-01",
+            "name": "[parameters('actionGroupName')]",
+            "location": "Global",
+            "properties": {
+                "groupShortName": "[parameters('actionGroupShortName')]",
+                "enabled": true,
+                "smsReceivers": [
+                    {
+                    "name": "SMS",
+                    "countryCode": "52",
+                    "phoneNumber": "[parameters('phoneNumber')]"
+                    }
+                ],
+                "emailReceivers": [
+                    {
+                    "name": "Email",
+                    "emailAddress": "[parameters('emailAddress')]"
+                    }
+                ]
             }
+        },
+        {
+            "apiVersion": "2018-03-01",
+            "type": "Microsoft.Insights/metricAlerts",
+            "name": "[parameters('cpualertName')]",
+            "location": "global",
+            "tags": {},
+            "properties": {
+                "description": "Alerta CPU",
+                "severity": 4,
+                "enabled": true,
+                "scopes": [
+                    "[parameters('VirtualMachines')]"
+                ],
+                "evaluationFrequency": "PT1M",
+                "windowSize": "PT5M",
+                "criteria": {
+                    "odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria",
+                    "allOf": [
+                        {
+                            "criterionType": "StaticThresholdCriterion",
+                            "name" : "1st criterion",
+                            "metricName": "Percentage CPU",
+                            "dimensions":[],
+                            "operator": "GreaterThan",
+                            "threshold" : 2,
+                            "timeAggregation": "Average"                        
+                        }
+                    ]
+                },
+                "actions": [
+                    {
+                        "actionGroupId": "[resourceId('Microsoft.Insights/actionGroups', parameters('actionGroupName'))]"
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Insights/actionGroups/', parameters('actionGroupName'))]"
+            ]
         }
-    },
-    "resources": [],
-    "outputs": {
-        "message": {
-            "type": "array",
-            "value": "[variables('vmArray')]"
-        }
+    ],
+    "outputs":{
+        
     }
 }
