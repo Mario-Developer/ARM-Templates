@@ -4,7 +4,9 @@
     "parameters": {
         "VirtualMachinesRG": {
             "type": "array",
-            "defaultValue": [],
+            "defaultValue": [
+                "/subscriptions/fa576709-5768-43a6-80f8-510eefb51258/resourceGroups/JSON-TEMPLATES"
+            ],
             "metadata": {
                 "description": "description"
             }
@@ -96,11 +98,13 @@
                 "description": "Alerta CPU",
                 "severity": 4,
                 "enabled": true,
-                "scopes": "[parameters('VirtualMachines')]",
+                "scopes": "[parameters('VirtualMachinesRG')]",
+                "targetResourceRegion": "[resourceGroup().location]",
+                "targetResourceType": "Microsoft.Compute/virtualMachines",
                 "evaluationFrequency": "PT1M",
                 "windowSize": "PT5M",
                 "criteria": {
-                    "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria",
+                    "odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria",
                     "allOf": [
                         {
                             "criterionType": "StaticThresholdCriterion",
