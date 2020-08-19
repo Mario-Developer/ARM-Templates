@@ -168,7 +168,7 @@
             "location": "[parameters('location')]",
             "properties": {
                 "sku": {
-                    "name": "Free"
+                    "name": "pergb2018"
                 },
                 "retentionInDays": 60,
                 "features": {
@@ -258,7 +258,7 @@
                     "enabled": true,
                     "retentionPolicy": {
                         "days": 60,
-                        "enabled": false
+                        "enabled": true
                     }
                 }
                 
