@@ -169,6 +169,12 @@
             "properties": {
                 "sku": {
                     "name": "Free"
+                },
+                "retentionInDays": 60,
+                "features": {
+                    "searchVersion": 1,
+                    "legacy": 0,
+                    "enableLogAccessUsingOnlyResourcePermissions": true
                 }
             }
         },
@@ -248,8 +254,12 @@
             "workspaceId": "[resourceId('microsoft.operationalinsights/workspaces/', parameters('LAWorkspaceName'))]",
             "logs": [
                 {
-                    "category": "AddonAzureBackupJobs",
-                    "enabled": true
+                    "category": "AzureBackupReport",
+                    "enabled": true,
+                    "retentionPolicy": {
+                        "days": 60,
+                        "enabled": false
+                    }
                 }
                 
             ],
