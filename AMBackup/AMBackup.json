@@ -176,7 +176,10 @@
                     "legacy": 0,
                     "enableLogAccessUsingOnlyResourcePermissions": true
                 }
-            }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"
+            ]
         },
         {
             "apiVersion": "2016-06-01",
@@ -187,7 +190,10 @@
                 "name": "RS0",
                 "tier": "Standard"
             },
-            "properties": {}
+            "properties": {},
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"
+            ]
         },
         {
             "apiVersion": "2016-06-01",
@@ -287,7 +293,8 @@
                 "sourceResourceId": "[resourceId('Microsoft.Compute/virtualMachines', parameters('VirtualMachines')[copyIndex()])]"
             },
             "dependsOn":[
-                "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', parameters('vaultName'), parameters('policyName'))]"
+                "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', parameters('vaultName'), parameters('policyName'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"
             ]
         },
         {
