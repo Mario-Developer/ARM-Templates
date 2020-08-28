@@ -255,21 +255,52 @@
             "type": "Microsoft.RecoveryServices/vaults/providers/diagnosticSettings",
             "name": "[concat(parameters('vaultName'), '/microsoft.insights/', parameters('LAWorkspaceName'))]",
             "properties": {
-            "name": "[parameters('LAWorkspaceName')]",
-            "storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]",
-            "workspaceId": "[resourceId('microsoft.operationalinsights/workspaces/', parameters('LAWorkspaceName'))]",
-            "logs": [
-                {
-                    "category": "AzureBackupReport",
-                    "enabled": true,
-                    "retentionPolicy": {
-                        "days": 60,
-                        "enabled": true
+                "name": "[parameters('LAWorkspaceName')]",
+                "storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]",
+                "workspaceId": "[resourceId('microsoft.operationalinsights/workspaces/', parameters('LAWorkspaceName'))]",
+                "logs": [
+                    {
+                        "category": "CoreAzureBackup",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 60,
+                            "enabled": true
+                        }
+                    },
+                    {
+                        "category": "AddonAZureBackupJobs",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 60,
+                            "enabled": true
+                        }
+                    },
+                    {
+                        "category": "AddonAZureBackupAlerts",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 60,
+                            "enabled": true
+                        }
+                    },
+                    {
+                        "category": "AddonAZureBackupPolicy",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 60,
+                            "enabled": true
+                        }
+                    },
+                    {
+                        "category": "AddonAZureBackupStorage",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 60,
+                            "enabled": true
+                        }
                     }
-                }
-                
-            ],
-            "metrics": []
+                ],
+                "metrics": []
             },
             "dependsOn": [
                 "[resourceId('Microsoft.RecoveryServices/vaults/', parameters('vaultName'))]",
