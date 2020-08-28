@@ -61,11 +61,7 @@
                         "threshold": 1
                     }
                 }
-            },
-            "dependsOn": [
-                "[resourceId('microsoft.operationalinsights/workspaces/', parameters('LAWorkspaceName'))]",
-                "[resourceId('Microsoft.Insights/actionGroups/',parameters('actionGroupName'))]"
-            ]
+            }
         }
     ],
     "outputs":{
