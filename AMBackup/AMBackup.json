@@ -3,13 +3,6 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "location": {
-            "type": "string",
-            "defaultValue": "[resourceGroup().location]",
-            "metadata": {
-                "description": "Ubicación para todos los recursos"
-            }
-        },
         "VirtualMachines": {
             "type": "array",
             "defaultValue": ["JSON-VM2","JSON-VML"],
@@ -22,97 +15,6 @@
             "defaultValue": "ambstorageaccount1",
             "metadata": {
                 "description": "Nombre de una cuenta de almacenamiento"
-            }
-        },
-        "LAWorkspaceName": {
-            "type": "string",
-            "defaultValue": "AMBWorkSpace01",
-            "metadata": {
-                "description": "Nombre de un espacio de trabajo Log Analytics"
-            }
-        },
-        "vaultName": {
-            "type": "string",
-            "defaultValue": "PrecitoolVault",
-            "metadata": {
-                "description": "Nombre de la bóveda de servicios de recuperación"
-            }
-        },
-        "policyName": {
-            "type": "string",
-            "defaultValue": "DirectivaPrecitool",
-            "metadata": {
-                "description": "Nombre de la política de respaldo"
-            }
-        },
-        "scheduleRunTimes": {
-            "type": "array",
-            "defaultValue": ["01:00"],
-            "metadata": {
-                "description": "Momentos del día en que se debe activar la copia de seguridad p.ej. 01:00 o 13:00. Debe ser una matriz, sin embargo, para las máquinas virtuales IaaS, solo un valor es válido. Esto también se usará en LTR para copias de seguridad diarias, semanales, mensuales y anuales "
-            }
-        },
-        "timeZone": {
-            "type": "string",
-            "defaultValue": "Central Standard Time (Mexico)",
-            "metadata": {
-                "description": "Cualquier zona horaria válida, por ejemplo: UTC, hora estándar del Pacífico. Consulte: https://msdn.microsoft.com/en-us/library/gg154758.aspx "
-            }
-        },
-        "instantRpRetentionRangeInDays": {
-            "type": "int",
-            "defaultValue": 2,
-            "allowedValues": [
-                1,
-                2,
-                3,
-                4,
-                5
-                ],
-            "metadata": {
-                "description": "Número de días que se debe conservar el Punto de recuperación instantánea"
-            }
-        },
-        "dailyRetentionDurationCount": {
-            "type": "int",
-            "defaultValue": 180,
-            "metadata": {
-                "description": "Número de días que desea conservar la copia de seguridad."
-            }
-        },
-        "daysOfTheWeek": {
-            "type": "array",
-            "defaultValue": ["Sunday"],
-            "metadata": {
-                "description": "La copia de seguridad se ejecutará en una variedad de días como lunes, martes, etc. Se aplica solo en retención semanal "
-            }
-        },
-        "weeklyRetentionDurationCount": {
-            "type": "int",
-            "defaultValue": 6,
-            "metadata": {
-                "description": "Número de semanas que desea conservar la copia de seguridad "
-            }
-        },
-        "monthlyRetentionDurationCount": {
-            "type": "int",
-            "defaultValue": 4,
-            "metadata": {
-                "description": "Número de meses que desea conservar la copia de seguridad "
-            }
-        },
-        "actionGroupName": {
-            "type": "string",
-            "defaultValue": "Notificaciones",
-            "metadata": {
-                "description": "Nombre único (dentro del grupo de recursos) para el grupo de accion"
-            }
-        },
-        "actionGroupShortName": {
-            "type": "string",
-            "defaultValue": "Notif",
-            "metadata": {
-                "description": "Nombre corto (máximo 12 caracteres) para el grupo Acción"
             }
         },
         "phoneNumber": {
@@ -128,33 +30,35 @@
             "metadata": {
                 "description": "Dirección de correo eectónico a la cual se eviará la alerta"
             }
-        },
-        "backupalertName": {
-            "type": "string",
-            "defaultValue": "Implementación de Backup correcta",
-            "metadata": {
-                "description": "Nombre de la alerta del Backup"
-            }
-        },
-        "cpualertName": {
-            "type": "string",
-            "defaultValue": "Procentaje de CPU mayor a 60",
-            "metadata": {
-                "description": "Nombre de la alerta del CPU"
-            }
         }
     },
     "variables": {
+        "location": "[resourceGroup().location]",
+        "workspaceName":"[concat(resourceGroup().name, '/AMB-WorkSpace')]",
+        "vaultName":"[concat(resourceGroup().name, 'AMB-Vault')]",
+        "policyName":"Precitool-Policy",
+        "timeZone":"Central Standard Time (Mexico)",
+        "scheduleRunTimes":["01:00"],
+        "daysOfTheWeek":["Sunday"],
+        "instantRpRetentionRangeInDays": 2,
+        "dailyRetentionDurationCount": 16,
+        "weeklyRetentionDurationCount": 6,
+        "monthlyRetentionDurationCount": 4,
+        "actiongroupName": "Notificaciones",
+        "actiongroupShortName":"Notify",
+        "backupalertName": "Implementación de Backup correcta",
+        "cpualertName": "Procentaje de CPU mayor a 60",
+
         "backupFabric": "Azure",
         "v2VmContainer": "iaasvmcontainer;iaasvmcontainerv2;",
         "v2Vm": "vm;iaasvmcontainerv2;"
     },
     "resources": [
-        {
-            "apiVersion": "2017-06-01",
+        {   
             "type": "Microsoft.Storage/storageAccounts",
             "name": "[parameters('storageAccountName')]",
-            "location": "[parameters('location')]",
+            "apiVersion": "2017-06-01",
+            "location": "[variables('location')]",
             "sku": {
                 "name": "Standard_LRS"
             },
@@ -162,10 +66,10 @@
             "properties": {}
         },
         {
-            "apiVersion": "2015-11-01-preview",
             "type": "Microsoft.OperationalInsights/workspaces",
-            "name": "[parameters('LAWorkspaceName')]",
-            "location": "[parameters('location')]",
+            "name": "[variables('workspaceName')]",
+            "apiVersion": "2015-11-01-preview",
+            "location": "[variables('location')]",
             "properties": {
                 "sku": {
                     "name": "pergb2018"
@@ -182,49 +86,46 @@
             ]
         },
         {
-            "apiVersion": "2016-06-01",
             "type": "Microsoft.RecoveryServices/vaults",
-            "name": "[parameters('vaultName')]",
-            "location": "[parameters('location')]",
+            "name": "[variables('vaultName')]",
+            "apiVersion": "2016-06-01",
+            "location": "[variables('location')]",
             "sku": {
                 "name": "RS0",
                 "tier": "Standard"
             },
             "properties": {},
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"
+                "[resourceId('microsoft.operationalinsights/workspaces/', variables('workspaceName'))]"
             ]
         },
         {
-            "apiVersion": "2016-06-01",
             "type": "Microsoft.RecoveryServices/vaults/backupPolicies",
-            "name": "[concat(parameters('vaultName'), '/', parameters('policyName'))]",
-            "dependsOn": [
-                "[concat('Microsoft.RecoveryServices/vaults/', parameters('vaultName'))]"
-            ],
-            "location": "[parameters('location')]",
+            "name": "[concat(variables('vaultName'), '/', variables('policyName'))]",
+            "apiVersion": "2016-06-01",
+            "location": "[variables('location')]",
             "properties": {
                 "backupManagementType": "AzureIaasVM",
-                "instantRpRetentionRangeInDays": "[parameters('instantRpRetentionRangeInDays')]",
+                "instantRpRetentionRangeInDays": "[variables('instantRpRetentionRangeInDays')]",
                 "schedulePolicy": {
                     "scheduleRunFrequency": "Daily",
                     "scheduleRunDays": null,
-                    "scheduleRunTimes": "[parameters('scheduleRunTimes')]",
+                    "scheduleRunTimes": "[variables('scheduleRunTimes')]",
                     "schedulePolicyType": "SimpleSchedulePolicy"
                 },
                 "retentionPolicy": {
                     "dailySchedule": {
-                        "retentionTimes": "[parameters('scheduleRunTimes')]",
+                        "retentionTimes": "[variables('scheduleRunTimes')]",
                         "retentionDuration": {
-                            "count": "[parameters('dailyRetentionDurationCount')]",
+                            "count": "[variables('dailyRetentionDurationCount')]",
                             "durationType": "Days"
                         }
                     },
                     "weeklySchedule": {
-                        "daysOfTheWeek": "[parameters('daysOfTheWeek')]",
-                        "retentionTimes": "[parameters('scheduleRunTimes')]",
+                        "daysOfTheWeek": "[variables('daysOfTheWeek')]",
+                        "retentionTimes": "[variables('scheduleRunTimes')]",
                         "retentionDuration": {
-                            "count": "[parameters('weeklyRetentionDurationCount')]",
+                            "count": "[variables('weeklyRetentionDurationCount')]",
                             "durationType": "Weeks"
                         }
                     },
@@ -239,25 +140,28 @@
                             ]
                         },
                         "retentionScheduleWeekly": null,
-                        "retentionTimes": "[parameters('scheduleRunTimes')]",
+                        "retentionTimes": "[variables('scheduleRunTimes')]",
                         "retentionDuration": {
-                            "count": "[parameters('monthlyRetentionDurationCount')]",
+                            "count": "[variables('monthlyRetentionDurationCount')]",
                             "durationType": "Months"
                         }
                     },
                     "retentionPolicyType": "LongTermRetentionPolicy"
                 },
-                "timeZone": "[parameters('timeZone')]"
-            }
+                "timeZone": "[variables('timeZone')]"
+            },
+            "dependsOn": [
+                "[concat('Microsoft.RecoveryServices/vaults/', variables('vaultName'))]"
+            ]            
         },
         {
-            "apiVersion": "2017-05-01-preview",
             "type": "Microsoft.RecoveryServices/vaults/providers/diagnosticSettings",
-            "name": "[concat(parameters('vaultName'), '/microsoft.insights/', parameters('LAWorkspaceName'))]",
+            "name": "[concat(variables('vaultName'), '/microsoft.insights/', variables('workspaceName'))]",
+            "apiVersion": "2017-05-01-preview",
             "properties": {
-                "name": "[parameters('LAWorkspaceName')]",
+                "name": "[variables('workspaceName')]",
                 "storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]",
-                "workspaceId": "[resourceId('microsoft.operationalinsights/workspaces/', parameters('LAWorkspaceName'))]",
+                "workspaceId": "[resourceId('microsoft.operationalinsights/workspaces/', variables('workspaceName'))]",
                 "logs": [
                     {
                         "category": "CoreAzureBackup",
@@ -303,38 +207,35 @@
                 "metrics": []
             },
             "dependsOn": [
-                "[resourceId('Microsoft.RecoveryServices/vaults/', parameters('vaultName'))]",
-                "[resourceId('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]",
-                "[resourceId('microsoft.operationalinsights/workspaces/', parameters('LAWorkspaceName'))]"
+                "[resourceId('Microsoft.RecoveryServices/vaults/', variables('vaultName'))]"
             ]
         },
         {
-            "apiVersion": "2016-12-01",
             "type": "Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems",
-            "name": "[concat(parameters('vaultName'), '/', variables('backupFabric'), '/', variables('v2VmContainer'), concat(resourceGroup().name, ';', parameters('VirtualMachines')[copyIndex()]), '/', variables('v2Vm'), concat(resourceGroup().name, ';', parameters('VirtualMachines')[copyIndex()]))]",
+            "name": "[concat(variables('vaultName'), '/', variables('backupFabric'), '/', variables('v2VmContainer'), concat(resourceGroup().name, ';', parameters('VirtualMachines')[copyIndex()]), '/', variables('v2Vm'), concat(resourceGroup().name, ';', parameters('VirtualMachines')[copyIndex()]))]",
+            "apiVersion": "2016-12-01",
             "comments": "PrecitoolVault/Azure/iaasvmcontainer;iaasvmcontainerv2;JSON-TEMPLATES;JSON-VM/vm;iaasvmcontainerv2;JSON-TEMPLATES;JSON-VM",
-            "location": "[parameters('location')]",
+            "location": "[variables('location')]",
             "copy": {
                 "name": "v2VmsCopy",
                 "count": "[length(parameters('VirtualMachines'))]"
             },
             "properties":{
                 "protectedItemType": "Microsoft.Compute/virtualMachines",
-                "policyId": "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', parameters('vaultName'), parameters('policyName'))]",
+                "policyId": "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', variables('vaultName'), variables('policyName'))]",
                 "sourceResourceId": "[resourceId('Microsoft.Compute/virtualMachines', parameters('VirtualMachines')[copyIndex()])]"
             },
             "dependsOn":[
-                "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', parameters('vaultName'), parameters('policyName'))]",
-                "[resourceId('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"
+                "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', variables('vaultName'), variables('policyName'))]"
             ]
         },
         {
             "type": "Microsoft.Insights/actionGroups",
+            "name": "[variables('actiongroupName')]",
             "apiVersion": "2018-03-01",
-            "name": "[parameters('actionGroupName')]",
             "location": "Global",
             "properties": {
-                "groupShortName": "[parameters('actionGroupShortName')]",
+                "groupShortName": "[variables('actiongroupShortName')]",
                 "enabled": true,
                 "smsReceivers": [
                     {
@@ -349,12 +250,15 @@
                     "emailAddress": "[parameters('emailAddress')]"
                     }
                 ]
-            }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', variables('vaultName'), variables('policyName'))]"
+            ]
         },
         {
-            "apiVersion": "2018-03-01",
             "type": "Microsoft.Insights/metricAlerts",
-            "name": "[parameters('cpualertName')]",
+            "name": "[variables('cpualertName')]",
+            "apiVersion": "2018-03-01",
             "location": "global",
             "tags": {},
             "properties": {
@@ -388,25 +292,25 @@
                 },
                 "actions": [
                     {
-                        "actionGroupId": "[resourceId('Microsoft.Insights/actionGroups', parameters('actionGroupName'))]"
+                        "actionGroupId": "[resourceId('Microsoft.Insights/actionGroups', variables('actiongroupName'))]"
                     }
                 ]
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Insights/actionGroups/', parameters('actionGroupName'))]"
+                "[resourceId('Microsoft.Insights/actionGroups/', variables('actiongroupName'))]"
             ]
         },
         {
-            "apiVersion": "2018-04-16",
             "type":"Microsoft.Insights/scheduledQueryRules",
-            "name": "[parameters('backupalertName')]",
-            "location": "[parameters('location')]",
+            "name": "[variables('backupalertName')]",
+            "apiVersion": "2018-04-16",
+            "location": "[variables('location')]",
             "properties":{
                 "description": "Sample log query alert",
                 "enabled": "true",
                 "source": {
-                    "query": "Event | where EventLevelName == \"Error\" | summarize count() by Computer",
-                    "dataSourceId": "[resourceId('microsoft.operationalinsights/workspaces/', parameters('LAWorkspaceName'))]",
+                    "query": "AddonAzureBackupJobs | summarize arg_max(TimeGenerated,*) by JobUniqueId | where JobStatus == \"Completed\"",
+                    "dataSourceId": "[resourceId('microsoft.operationalinsights/workspaces/', variables('workspaceName'))]",
                     "queryType":"ResultCount"
                 },
                 "schedule":{
@@ -417,7 +321,7 @@
                     "odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
                     "severity": "4",
                     "aznsAction":{
-                        "actionGroup": "[array(resourceId('Microsoft.Insights/actionGroups',parameters('actionGroupName')))]"
+                        "actionGroup": "[array(resourceId('Microsoft.Insights/actionGroups', variables('actiongroupName')))]"
                     },
                     "trigger":{
                         "thresholdOperator": "GreaterThan",
@@ -426,8 +330,7 @@
                 }
             },
             "dependsOn": [
-                "[resourceId('microsoft.operationalinsights/workspaces/', parameters('LAWorkspaceName'))]",
-                "[resourceId('Microsoft.Insights/actionGroups/',parameters('actionGroupName'))]"
+                "[resourceId('Microsoft.Insights/actionGroups/', variables('actiongroupName'))]"
             ]
         }
     ]
