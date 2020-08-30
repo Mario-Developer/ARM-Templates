@@ -27,9 +27,9 @@
     },
     "variables": {
         "location": "[resourceGroup().location]",
-        "storageaccountName": "[concat(uniqueString(resourceGroup().id), 'storage')]",
-        "workspaceName": "[concat(uniqueString(resourceGroup().id), 'workspace')]",
-        "vaultName": "[concat(uniqueString(resourceGroup().id), 'vault')]",
+        "storageaccountName": "[concat('ambstorage', uniqueString(resourceGroup().id))]",
+        "workspaceName": "[concat('AMB-Workspace-', uniqueString(resourceGroup().id))]",
+        "vaultName": "[concat('AMB-Vault-', uniqueString(resourceGroup().id))]",
         "policyName": "Precitool-Policy",
         "timeZone": "Central Standard Time (Mexico)",
         "scheduleRunTimes":["01:00"],
