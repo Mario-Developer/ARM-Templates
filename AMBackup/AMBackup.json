@@ -29,6 +29,10 @@
         "location": "[resourceGroup().location]",
         "storageaccountName": "[concat('ambstorage', uniqueString(resourceGroup().id))]",
         "workspaceName": "[concat('AMB-Workspace-', uniqueString(resourceGroup().id))]",
+        "Updates": {
+            "name": "[concat('Updates', '(', variables('workspaceName'), ')')]",
+            "galleryName": "Updates"
+        },
         "vaultName": "[concat('AMB-Vault-', uniqueString(resourceGroup().id))]",
         "policyName": "Precitool-Policy",
         "timeZone": "Central Standard Time (Mexico)",
@@ -42,6 +46,7 @@
         "actiongroupShortName":"Notify",
         "backupalertName": "Implementación de Backup correcta",
         "cpualertName": "Procentaje de CPU mayor a 60",
+        "automationAccountName": "[concat('AMB-AutoAccount-', uniqueString(resourceGroup().id))]",
 
         "backupFabric": "Azure",
         "v2VmContainer": "iaasvmcontainer;iaasvmcontainerv2;",
@@ -62,7 +67,7 @@
         {
             "type": "Microsoft.OperationalInsights/workspaces",
             "name": "[variables('workspaceName')]",
-            "apiVersion": "2015-11-01-preview",
+            "apiVersion": "2020-03-01-preview",
             "location": "WestUS2",
             "properties": {
                 "sku": {
@@ -75,6 +80,27 @@
                     "enableLogAccessUsingOnlyResourcePermissions": true
                 }
             },
+            "resources": [
+                {
+                    "apiVersion": "2015-11-01-preview",
+                    "location": "[variables('location')]",
+                    "name": "[variables('Updates').name]",
+                    "type": "Microsoft.OperationsManagement/solutions",
+                    "id": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.OperationsManagement/solutions/', variables('Updates').name)]",
+                    "dependsOn": [
+                        "[concat('Microsoft.OperationalInsights/workspaces/', variables('workspaceName'))]"
+                    ],
+                    "properties": {
+                        "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces/', variables('workspaceName'))]"
+                    },
+                    "plan": {
+                        "name": "[variables('Updates').name]",
+                        "publisher": "Microsoft",
+                        "promotionCode": "",
+                        "product": "[concat('OMSGallery/', variables('Updates').galleryName)]"
+                    }
+                }
+            ],
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts/', variables('storageaccountName'))]"
             ]
@@ -326,6 +352,32 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Insights/actionGroups/', variables('actiongroupName'))]"
             ]
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts",
+            "apiVersion": "2018-06-30",
+            "name": "[variables('automationAccountName')]",
+            "location": "WestUS2",
+            "dependsOn": [],
+            "tags": {},
+            "properties": {
+                "sku": {
+                    "name": "Basic"
+                }
+            }
+        },
+        {
+            "apiVersion": "2020-03-01-preview",
+            "type": "Microsoft.OperationalInsights/workspaces/linkedServices",
+            "name": "[concat(variables('workspaceName'), '/' , 'Automation')]",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.OperationalInsights/workspaces/', variables('workspaceName'))]",
+                "[concat('Microsoft.Automation/automationAccounts/', variables('automationAccountName'))]"
+            ],
+            "properties": {
+                "resourceId": "[resourceId('Microsoft.Automation/automationAccounts/', variables('automationAccountName'))]"
+            }
         }
     ]
   }
