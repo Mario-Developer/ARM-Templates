@@ -34,8 +34,8 @@
     },
     "variables": {
         "location": "[resourceGroup().location]",
-        "workspaceName":"[concat(resourceGroup().name, '/AMB-WorkSpace')]",
-        "vaultName":"[concat(resourceGroup().name, 'AMB-Vault')]",
+        "workspaceName":"[concat(resourceGroup().name, '-AMB-WorkSpace')]",
+        "vaultName":"[concat(resourceGroup().name, '-AMB-Vault')]",
         "policyName":"Precitool-Policy",
         "timeZone":"Central Standard Time (Mexico)",
         "scheduleRunTimes":["01:00"],
