@@ -358,13 +358,16 @@
             "apiVersion": "2018-06-30",
             "name": "[variables('automationAccountName')]",
             "location": "WestUS2",
-            "dependsOn": [],
             "tags": {},
             "properties": {
                 "sku": {
                     "name": "Basic"
                 }
-            }
+            },
+            "dependsOn": [
+                "[resourceId('microsoft.operationalinsights/workspaces/', variables('workspaceName'))]"
+            ]
+            
         },
         {
             "apiVersion": "2020-03-01-preview",
