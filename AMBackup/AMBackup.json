@@ -12,14 +12,14 @@
         },
         "phoneNumber": {
             "type": "string",
-            "defaultValue": "2221918832",
+            "defaultValue": "",
             "metadata": {
                 "description": "Numero telefónico al cual se enviará la alerta"
             }
         },
         "emailAddress": {
             "type": "string",
-            "defaultValue": "mgomez@precitool.com",
+            "defaultValue": "",
             "metadata": {
                 "description": "Dirección de correo eectónico a la cual se eviará la alerta"
             }
