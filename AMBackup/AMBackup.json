@@ -69,7 +69,7 @@
             "type": "Microsoft.OperationalInsights/workspaces",
             "name": "[variables('workspaceName')]",
             "apiVersion": "2015-11-01-preview",
-            "location": "[variables('location')]",
+            "location": "eastus2",
             "properties": {
                 "sku": {
                     "name": "pergb2018"
