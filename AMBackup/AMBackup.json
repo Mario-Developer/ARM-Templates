@@ -10,13 +10,6 @@
                 "description": "Arreglo de Máquinas Virtuales Azure. e.g. [\"vm1\",\"vm2\",\"vm3\"]"
             }
         },
-        "storageAccountName": {
-            "type": "string",
-            "defaultValue": "ambstorageaccount1",
-            "metadata": {
-                "description": "Nombre de una cuenta de almacenamiento"
-            }
-        },
         "phoneNumber": {
             "type": "string",
             "defaultValue": "2221918832",
@@ -34,10 +27,11 @@
     },
     "variables": {
         "location": "[resourceGroup().location]",
-        "workspaceName":"[concat(resourceGroup().name, '-AMB-WorkSpace')]",
-        "vaultName":"[concat(resourceGroup().name, '-AMB-Vault')]",
-        "policyName":"Precitool-Policy",
-        "timeZone":"Central Standard Time (Mexico)",
+        "storageaccountName": "[concat(uniqueString(resourceGroup().id), 'storage')]",
+        "workspaceName": "[concat(uniqueString(resourceGroup().id), 'workspace')]",
+        "vaultName": "[concat(uniqueString(resourceGroup().id), 'vault')]",
+        "policyName": "Precitool-Policy",
+        "timeZone": "Central Standard Time (Mexico)",
         "scheduleRunTimes":["01:00"],
         "daysOfTheWeek":["Sunday"],
         "instantRpRetentionRangeInDays": 2,
@@ -56,7 +50,7 @@
     "resources": [
         {   
             "type": "Microsoft.Storage/storageAccounts",
-            "name": "[parameters('storageAccountName')]",
+            "name": "[variables('storageaccountName')]",
             "apiVersion": "2017-06-01",
             "location": "[variables('location')]",
             "sku": {
@@ -82,7 +76,7 @@
                 }
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts/', variables('storageaccountName'))]"
             ]
         },
         {
@@ -160,7 +154,7 @@
             "apiVersion": "2017-05-01-preview",
             "properties": {
                 "name": "[variables('workspaceName')]",
-                "storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]",
+                "storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts/', variables('storageaccountName'))]",
                 "workspaceId": "[resourceId('microsoft.operationalinsights/workspaces/', variables('workspaceName'))]",
                 "logs": [
                     {
@@ -172,7 +166,7 @@
                         }
                     },
                     {
-                        "category": "AddonAZureBackupJobs",
+                        "category": "AddonAzureBackupJobs",
                         "enabled": true,
                         "retentionPolicy": {
                             "days": 60,
@@ -180,7 +174,7 @@
                         }
                     },
                     {
-                        "category": "AddonAZureBackupAlerts",
+                        "category": "AddonAzureBackupAlerts",
                         "enabled": true,
                         "retentionPolicy": {
                             "days": 60,
@@ -188,7 +182,7 @@
                         }
                     },
                     {
-                        "category": "AddonAZureBackupPolicy",
+                        "category": "AddonAzureBackupPolicy",
                         "enabled": true,
                         "retentionPolicy": {
                             "days": 60,
@@ -196,7 +190,7 @@
                         }
                     },
                     {
-                        "category": "AddonAZureBackupStorage",
+                        "category": "AddonAzureBackupStorage",
                         "enabled": true,
                         "retentionPolicy": {
                             "days": 60,
