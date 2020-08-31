@@ -42,8 +42,8 @@
     },
     "variables": {
         "lockLevel": "None",
-        "description": "Sample Managed application definition",
-        "displayName": "Sample Managed application definition",
+        "description": "Solución de Alertamiento, Monitoreo y Backup de máquinas virtuales",
+        "displayName": "AMB-Solution",
         "managedApplicationDefinitionName": "[parameters('applicationName')]",
         "packageFileUri": "[parameters('_artifactsLocation')]",
         "defLocation": "[resourceId('Microsoft.Storage/storageAccounts/', parameters('definitionStorageResourceID'))]",

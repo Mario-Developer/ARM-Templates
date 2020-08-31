@@ -97,7 +97,7 @@
             }
         ],
         "outputs": {
-            "VirtualMachines": "[steps('VirtualMachines').vmtextbox]",
+            "VirtualMachines": "[steps('vm02').vmselector02.colVM]",
             "phoneNumber": "[steps('ContactInfo').smstextbox]",
             "emailAddress": "[steps('ContactInfo').mailtextbox]"
         }
