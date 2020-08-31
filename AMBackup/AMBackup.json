@@ -83,7 +83,7 @@
             "resources": [
                 {
                     "apiVersion": "2015-11-01-preview",
-                    "location": "[variables('location')]",
+                    "location": "WestUS2",
                     "name": "[variables('Updates').name]",
                     "type": "Microsoft.OperationsManagement/solutions",
                     "id": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.OperationsManagement/solutions/', variables('Updates').name)]",
