@@ -2,29 +2,26 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "test": {
-            "type": "object",
-            "defaultValue":[
-                {
-                    "a": "b"
-                },
-                {
-                    "a": "c" 
-                },
-                {
-                    "a": "d"
-                }
-            ]
-        }
     },
     "variables":{
+        "test":[
+            {
+                "a": "b"
+            },
+            {
+                "a": "c" 
+            },
+            {
+                "a": "d"
+            }
+        ]
     },
     "resources":[ 
     ],
     "outputs": {
         "Salida": {
             "type": "object",
-            "value": "[parameters('test')]"
+            "value": "[variables('test')]"
         }
     }
 }
