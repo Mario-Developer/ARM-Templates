@@ -8,7 +8,7 @@
         },
         "applicationName": {
             "type": "string",
-            "defaultValue": "AMB-Solution",
+            "defaultValue": "AMB-Solution01",
             "metadata": {
                 "description": "Managed Application name"
             }
