@@ -27,7 +27,7 @@
             "type": "array",
             "copy": {
                 "count": "[length(variables('test'))]",
-                "input": "[variables('test')[copyIndex()].name]"
+                "input": "[variables('test')[copyIndex()].nombre]"
             }
         }
     }

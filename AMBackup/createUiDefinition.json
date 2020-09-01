@@ -7,7 +7,7 @@
         "basics": [],
         "steps": [
             {
-                "name": "VirtualMachines",
+                "name": "vm00",
                 "label": "Máquinas Virtuales",
                 "elements": [
                     {
@@ -15,9 +15,6 @@
                         "type": "Microsoft.Common.TextBox",
                         "label": "Máquina Virtual",
                         "placeholder": "Máquina Virtual",
-                        "constraints": {
-                            "required": true
-                        }
                     }
                 ]
             },
@@ -64,11 +61,11 @@
 				]
             },
             {
-                "name": "vm02",
+                "name": "virtualMachines",
                 "label": "MV Editable Grid",
                 "elements": [
                     {
-                        "name": "vmselector02",
+                        "name": "vmGrid",
                         "type": "Microsoft.Common.EditableGrid",
                         "label": "Máquinas Virtuales",
                         "constraints":{
@@ -81,7 +78,7 @@
                             },
                             "columns":[
                                 {
-                                    "id": "colVM",
+                                    "id": "vmName",
                                     "header": "Máquina Virtual",
                                     "width": "1fr",
                                     "element":{
@@ -97,7 +94,7 @@
             }
         ],
         "outputs": {
-            "VirtualMachines": "[steps('vm02').vmselector02.colVM]",
+            "VirtualMachines": "[steps('virtualMachines').vmGrid.vmName]",
             "phoneNumber": "[steps('ContactInfo').smstextbox]",
             "emailAddress": "[steps('ContactInfo').mailtextbox]"
         }

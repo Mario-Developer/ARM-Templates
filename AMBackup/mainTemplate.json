@@ -5,7 +5,6 @@
     "parameters": {
         "VirtualMachines": {
             "type": "array",
-            "defaultValue": ["JSON-VM2","JSON-VML"],
             "metadata": {
                 "description": "Arreglo de Máquinas Virtuales Azure. e.g. [\"vm1\",\"vm2\",\"vm3\"]"
             }
@@ -289,7 +288,7 @@
                     {
                         "name":"scopes",
                         "count": "[length(parameters('VirtualMachines'))]",
-                        "input": "[resourceId('Microsoft.Compute/virtualMachines', parameters('VirtualMachines')[copyIndex('scopes')])]"
+                        "input": "[resourceId('Microsoft.Compute/virtualMachines', parameters('VirtualMachines')[copyIndex('scopes')].vmName)]"
                     }
                 ],
                 "targetResourceRegion": "[resourceGroup().location]",
