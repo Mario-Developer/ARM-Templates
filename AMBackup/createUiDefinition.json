@@ -14,7 +14,7 @@
                         "name": "vmtextbox",
                         "type": "Microsoft.Common.TextBox",
                         "label": "Máquina Virtual",
-                        "placeholder": "Máquina Virtual",
+                        "placeholder": "Máquina Virtual"
                     }
                 ]
             },
