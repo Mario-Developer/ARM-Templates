@@ -2,58 +2,20 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "LAWorkspaceName": {
+        "test": {
             "type": "string",
-            "metadata": {
-                "description": "description"
-            }
-        },
-        "vm": {
-            "type": "string",
-            "defaultValue": "UM-VMW",
-            "metadata": {
-                "description": "description"
-            }
+            "defaultValue":"mv1, mv2, mv3"
         }
     },
+    "variables":{
+        "variable": "[array(parameters('test'))]"
+    },
     "resources":[ 
-        {
-            "apiVersion": "2015-11-01-preview",
-            "type": "Microsoft.OperationalInsights/workspaces",
-            "name": "[parameters('LAWorkspaceName')]",
-            "location": "[resourceGroup().location]",
-            "properties": {
-                "sku": {
-                    "name": "Free"
-                },
-                "retentionInDays": 60,
-                "features": {
-                    "searchVersion": 1,
-                    "legacy": 0,
-                    "enableLogAccessUsingOnlyResourcePermissions": true
-                }
-            }
-        },
-        {
-            "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat('Microsoft.Compute/virtualMachines/', parameters('vm'), '/OMSExtension')]",
-            "apiVersion": "2019-07-01",
-            "location": "[resourceGroup().location]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Compute/virtualMachines/', parameters('vm'))]"
-            ],
-            "properties": {
-                "publisher": "Microsoft.EnterpriseCloud.Monitoring",
-                "type": "MicrosoftMonitoringAgent",
-                "typeHandlerVersion": "1.0",
-                "autoUpgradeMinorVersion": true,
-                "settings": {
-                    "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces',parameters('LAWorkspaceName'))]"
-                },
-                "protectedSettings": {
-                    "workspaceKey": "myWorkspaceKey"
-                }
-            }
+    ],
+    "outputs": {
+        "Salida": {
+            "type": "array",
+            "value": "[variables('variable')]"
         }
-    ]
+    }
 }
