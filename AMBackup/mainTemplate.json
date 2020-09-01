@@ -5,6 +5,14 @@
     "parameters": {
         "VirtualMachines": {
             "type": "array",
+            "defaultValue": [
+                {
+                    "vmName": "JSON-VM2"
+                },
+                {
+                    "vmName": "JSON-VML"
+                }
+            ],
             "metadata": {
                 "description": "Arreglo de Máquinas Virtuales Azure. e.g. [\"vm1\",\"vm2\",\"vm3\"]"
             }
