@@ -3,8 +3,12 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "test": {
-            "type": "string",
-            "defaultValue":"v1, v2, v3"
+            "type": "object",
+            "defaultValue":{
+                "a1": "b",
+                "a2": "c",
+                "a3": "d"
+            } 
         }
     },
     "variables":{
@@ -14,7 +18,7 @@
     ],
     "outputs": {
         "Salida": {
-            "type": "string",
+            "type": "array",
             "value": "[variables('variable')]"
         }
     }
