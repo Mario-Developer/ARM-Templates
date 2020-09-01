@@ -2,26 +2,33 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+
     },
     "variables":{
         "test":[
             {
-                "a": "b"
+                "nombre": "Mario",
+                "edad": "25"
             },
             {
-                "a": "c" 
+                "nombre": "Grecia",
+                "edad": "24" 
             },
             {
-                "a": "d"
+                "nombre": "Sebas",
+                "edad": "10"
             }
         ]
     },
     "resources":[ 
     ],
     "outputs": {
-        "Salida": {
-            "type": "object",
-            "value": "[variables('test')]"
+        "output1": {
+            "type": "array",
+            "copy": {
+                "count": "[length(variables('test'))]",
+                "input": "[variables('test')[copyIndex()].name]"
+            }
         }
     }
 }
