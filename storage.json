@@ -4,22 +4,27 @@
     "parameters": {
         "test": {
             "type": "object",
-            "defaultValue":{
-                "a1": "b",
-                "a2": "c",
-                "a3": "d"
-            } 
+            "defaultValue":[
+                {
+                    "a": "b"
+                },
+                {
+                    "a": "c" 
+                },
+                {
+                    "a": "d"
+                }
+            ]
         }
     },
     "variables":{
-        "variable": "[array(parameters('test'))]"
     },
     "resources":[ 
     ],
     "outputs": {
         "Salida": {
-            "type": "array",
-            "value": "[variables('variable')]"
+            "type": "object",
+            "value": "[parameters('test')]"
         }
     }
 }
