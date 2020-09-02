@@ -19,7 +19,7 @@
 
         "_artifactsLocation": {
             "type": "string",
-            "defaultValue": "https://raw.githubusercontent.com/Mario-Developer/ARM-Templates/master/AMBackup/app.zip",
+            "defaultValue": "https://raw.githubusercontent.com/Mario-Developer/ARM-Templates/master/AMBackup/pkg.zip",
             "metadata": {
                 "description": "The base URI where artifacts required by this template are located."
             }
