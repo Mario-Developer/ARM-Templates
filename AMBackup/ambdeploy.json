@@ -8,6 +8,7 @@
         },
         "applicationName": {
             "type": "string",
+            "defaultValue": "AMB-Solution-App",
             "metadata": {
                 "description": "Managed Application name"
             }
@@ -16,12 +17,6 @@
             "type": "string"
         },
 
-        "definitionStorageResourceID": {
-            "type": "string",
-            "metadata": {
-                "description": "Storage account resource ID for where you're storing your definition"
-            }
-        },
         "_artifactsLocation": {
             "type": "string",
             "defaultValue": "https://raw.githubusercontent.com/Mario-Developer/ARM-Templates/master/AMBackup/app.zip",
@@ -34,11 +29,11 @@
         "definitionStorageResourceID": "[resourceId('Microsoft.Storage/storageAccounts/', parameters('definitionStorageAccountName'))]",
 
         "lockLevel": "None",
-        "description": "Sample Managed application definition",
-        "displayName": "Sample Managed application definition",
+        "description": "Solucion de Alertamiento, Monitoreo y Backup",
+        "displayName": "AMB-Solution-Precitool",
         "managedApplicationDefinitionName": "[parameters('applicationName')]",
         "packageFileUri": "[parameters('_artifactsLocation')]",
-        "defLocation": "[parameters('definitionStorageResourceID')]",
+        "defLocation": "[variables('definitionStorageResourceID')]",
         "managedResourceGroupId": "[concat(subscription().id,'/resourceGroups/', concat(parameters('applicationName'),'_managed'))]",
         "applicationDefinitionResourceId": "[resourceId('Microsoft.Solutions/applicationDefinitions',variables('managedApplicationDefinitionName'))]"
     },
