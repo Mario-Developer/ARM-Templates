@@ -113,6 +113,35 @@
             ]
         },
         {
+            "type": "Microsoft.Automation/automationAccounts",
+            "apiVersion": "2018-06-30",
+            "name": "[variables('automationAccountName')]",
+            "location": "WestUS2",
+            "tags": {},
+            "properties": {
+                "sku": {
+                    "name": "Basic"
+                }
+            },
+            "dependsOn": [
+                "[resourceId('microsoft.operationalinsights/workspaces/', variables('workspaceName'))]"
+            ]
+            
+        },
+        {
+            "apiVersion": "2020-03-01-preview",
+            "type": "Microsoft.OperationalInsights/workspaces/linkedServices",
+            "name": "[concat(variables('workspaceName'), '/' , 'Automation')]",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.OperationalInsights/workspaces/', variables('workspaceName'))]",
+                "[concat('Microsoft.Automation/automationAccounts/', variables('automationAccountName'))]"
+            ],
+            "properties": {
+                "resourceId": "[resourceId('Microsoft.Automation/automationAccounts/', variables('automationAccountName'))]"
+            }
+        },
+        {
             "type": "Microsoft.RecoveryServices/vaults",
             "name": "[variables('vaultName')]",
             "apiVersion": "2016-06-01",
@@ -238,25 +267,6 @@
             ]
         },
         {
-            "type": "Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems",
-            "name": "[concat(variables('vaultName'), '/', variables('backupFabric'), '/', variables('v2VmContainer'), concat(resourceGroup().name, ';', parameters('VirtualMachines')[copyIndex()].vmName), '/', variables('v2Vm'), concat(resourceGroup().name, ';', parameters('VirtualMachines')[copyIndex()].vmName))]",
-            "apiVersion": "2016-12-01",
-            "comments": "PrecitoolVault/Azure/iaasvmcontainer;iaasvmcontainerv2;JSON-TEMPLATES;JSON-VM/vm;iaasvmcontainerv2;JSON-TEMPLATES;JSON-VM",
-            "location": "[variables('location')]",
-            "copy": {
-                "name": "v2VmsCopy",
-                "count": "[length(parameters('VirtualMachines'))]"
-            },
-            "properties":{
-                "protectedItemType": "Microsoft.Compute/virtualMachines",
-                "policyId": "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', variables('vaultName'), variables('policyName'))]",
-                "sourceResourceId": "[resourceId('Microsoft.Compute/virtualMachines', parameters('VirtualMachines')[copyIndex()].vmName)]"
-            },
-            "dependsOn":[
-                "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', variables('vaultName'), variables('policyName'))]"
-            ]
-        },
-        {
             "type": "Microsoft.Insights/actionGroups",
             "name": "[variables('actiongroupName')]",
             "apiVersion": "2018-03-01",
@@ -280,51 +290,6 @@
             },
             "dependsOn": [
                 "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', variables('vaultName'), variables('policyName'))]"
-            ]
-        },
-        {
-            "type": "Microsoft.Insights/metricAlerts",
-            "name": "[variables('cpualertName')]",
-            "apiVersion": "2018-03-01",
-            "location": "global",
-            "tags": {},
-            "properties": {
-                "description": "Alerta CPU mayor a 60",
-                "severity": 4,
-                "enabled": true,
-                "copy":[
-                    {
-                        "name":"scopes",
-                        "count": "[length(parameters('VirtualMachines'))]",
-                        "input": "[resourceId('Microsoft.Compute/virtualMachines', parameters('VirtualMachines')[copyIndex('scopes')].vmName)]"
-                    }
-                ],
-                "targetResourceRegion": "[resourceGroup().location]",
-                "targetResourceType": "Microsoft.Compute/virtualMachines",
-                "evaluationFrequency": "PT1M",
-                "windowSize": "PT5M",
-                "criteria": {
-                    "odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria",
-                    "allOf": [
-                        {
-                            "criterionType": "StaticThresholdCriterion",
-                            "name" : "1st criterion",
-                            "metricName": "Percentage CPU",
-                            "dimensions":[],
-                            "operator": "GreaterThan",
-                            "threshold" : 2,
-                            "timeAggregation": "Average"                        
-                        }
-                    ]
-                },
-                "actions": [
-                    {
-                        "actionGroupId": "[resourceId('Microsoft.Insights/actionGroups', variables('actiongroupName'))]"
-                    }
-                ]
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Insights/actionGroups/', variables('actiongroupName'))]"
             ]
         },
         {
@@ -359,35 +324,6 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Insights/actionGroups/', variables('actiongroupName'))]"
             ]
-        },
-        {
-            "type": "Microsoft.Automation/automationAccounts",
-            "apiVersion": "2018-06-30",
-            "name": "[variables('automationAccountName')]",
-            "location": "WestUS2",
-            "tags": {},
-            "properties": {
-                "sku": {
-                    "name": "Basic"
-                }
-            },
-            "dependsOn": [
-                "[resourceId('microsoft.operationalinsights/workspaces/', variables('workspaceName'))]"
-            ]
-            
-        },
-        {
-            "apiVersion": "2020-03-01-preview",
-            "type": "Microsoft.OperationalInsights/workspaces/linkedServices",
-            "name": "[concat(variables('workspaceName'), '/' , 'Automation')]",
-            "location": "[variables('location')]",
-            "dependsOn": [
-                "[concat('Microsoft.OperationalInsights/workspaces/', variables('workspaceName'))]",
-                "[concat('Microsoft.Automation/automationAccounts/', variables('automationAccountName'))]"
-            ],
-            "properties": {
-                "resourceId": "[resourceId('Microsoft.Automation/automationAccounts/', variables('automationAccountName'))]"
-            }
         }
     ]
   }
