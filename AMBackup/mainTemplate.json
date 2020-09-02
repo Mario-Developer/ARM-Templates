@@ -239,7 +239,7 @@
         },
         {
             "type": "Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems",
-            "name": "[concat(variables('vaultName'), '/', variables('backupFabric'), '/', variables('v2VmContainer'), concat(resourceGroup().name, ';', parameters('VirtualMachines')[copyIndex()]), '/', variables('v2Vm'), concat(resourceGroup().name, ';', parameters('VirtualMachines')[copyIndex()]))]",
+            "name": "[concat(variables('vaultName'), '/', variables('backupFabric'), '/', variables('v2VmContainer'), concat(resourceGroup().name, ';', parameters('VirtualMachines')[copyIndex()].vmName), '/', variables('v2Vm'), concat(resourceGroup().name, ';', parameters('VirtualMachines')[copyIndex()].vmName))]",
             "apiVersion": "2016-12-01",
             "comments": "PrecitoolVault/Azure/iaasvmcontainer;iaasvmcontainerv2;JSON-TEMPLATES;JSON-VM/vm;iaasvmcontainerv2;JSON-TEMPLATES;JSON-VM",
             "location": "[variables('location')]",
