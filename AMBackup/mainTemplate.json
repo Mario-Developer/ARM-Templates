@@ -17,6 +17,13 @@
                 "description": "Arreglo de Máquinas Virtuales Azure. e.g. [\"vm1\",\"vm2\",\"vm3\"]"
             }
         },
+        "targetresourcegroupName": {
+            "type": "string",
+            "defaultValue": "JSON-TEMPLATES",
+            "metadata": {
+                "description": "Nombre del grupo de resursos en donde se encuentran las máquinas virtuales"
+            }
+        },
         "phoneNumber": {
             "type": "string",
             "defaultValue": "",
@@ -239,7 +246,7 @@
         },
         {
             "type": "Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems",
-            "name": "[concat(variables('vaultName'), '/', variables('backupFabric'), '/', variables('v2VmContainer'), concat(resourceGroup().name, ';', parameters('VirtualMachines')[copyIndex()].vmName), '/', variables('v2Vm'), concat(resourceGroup().name, ';', parameters('VirtualMachines')[copyIndex()].vmName))]",
+            "name": "[concat(variables('vaultName'), '/', variables('backupFabric'), '/', variables('v2VmContainer'), concat(parameters('targetresourcegroupName'), ';', parameters('VirtualMachines')[copyIndex()].vmName), '/', variables('v2Vm'), concat(parameters('targetresourcegroupName'), ';', parameters('VirtualMachines')[copyIndex()].vmName))]",
             "apiVersion": "2016-12-01",
             "comments": "PrecitoolVault/Azure/iaasvmcontainer;iaasvmcontainerv2;JSON-TEMPLATES;JSON-VM/vm;iaasvmcontainerv2;JSON-TEMPLATES;JSON-VM",
             "location": "[variables('location')]",
@@ -380,7 +387,7 @@
             "apiVersion": "2020-03-01-preview",
             "type": "Microsoft.OperationalInsights/workspaces/linkedServices",
             "name": "[concat(variables('workspaceName'), '/' , 'Automation')]",
-            "location": "[variables('location')]",
+            "location": "WestUS2",
             "dependsOn": [
                 "[concat('Microsoft.OperationalInsights/workspaces/', variables('workspaceName'))]",
                 "[concat('Microsoft.Automation/automationAccounts/', variables('automationAccountName'))]"

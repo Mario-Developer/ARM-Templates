@@ -7,18 +7,6 @@
         "basics": [],
         "steps": [
             {
-                "name": "vm00",
-                "label": "Máquinas Virtuales",
-                "elements": [
-                    {
-                        "name": "vmtextbox",
-                        "type": "Microsoft.Common.TextBox",
-                        "label": "Máquina Virtual",
-                        "placeholder": "Máquina Virtual"
-                    }
-                ]
-            },
-            {
                 "name": "ContactInfo",
                 "label": "Información de Contacto",
                 "elements": [
@@ -43,6 +31,47 @@
                 ]
             },
             {
+                "name": "virtualMachines",
+                "label": "Máquinas Virtuales",
+                "elements": [
+                    {
+                        "name": "vmresourcegoupName",
+                        "type": "Microsoft.Common.TextBox",
+                        "label": "Grupo de Recursos de las Máquinas Virtuales",
+                        "constraints":{
+                            "required": true
+                        }
+
+                    },
+                    {
+                        "name": "vmGrid",
+                        "type": "Microsoft.Common.EditableGrid",
+                        "label": "Máquinas Virtuales",
+                        "constraints":{
+                            "width": "Full",
+                            "rows":{
+                                "count":{
+                                    "min": 1,
+                                    "max": 10
+                                }
+                            },
+                            "columns":[
+                                {
+                                    "id": "vmName",
+                                    "header": "Máquinas Virtuales",
+                                    "width": "1fr",
+                                    "element":{
+                                        "name": "textbox",
+                                        "type": "Microsoft.Common.TextBox",
+                                        "placeholder": "Máquina Virtual"
+                                    }
+                                }
+                            ]
+                        }
+                    }   
+                ]
+            },
+            {
 				"name": "vm01",
 				"label": "MV Resource Selector",
 				"elements":[
@@ -59,42 +88,11 @@
                 		}		
 					}
 				]
-            },
-            {
-                "name": "virtualMachines",
-                "label": "MV Editable Grid",
-                "elements": [
-                    {
-                        "name": "vmGrid",
-                        "type": "Microsoft.Common.EditableGrid",
-                        "label": "Máquinas Virtuales",
-                        "constraints":{
-                            "width": "Full",
-                            "rows":{
-                                "count":{
-                                    "min": 1,
-                                    "max": 10
-                                }
-                            },
-                            "columns":[
-                                {
-                                    "id": "vmName",
-                                    "header": "Máquina Virtual",
-                                    "width": "1fr",
-                                    "element":{
-                                        "name": "textbox",
-                                        "type": "Microsoft.Common.TextBox",
-                                        "placeholder": "Máquina Virtual"
-                                    }
-                                }
-                            ]
-                        }
-                    }   
-                ]
             }
         ],
         "outputs": {
             "VirtualMachines": "[steps('virtualMachines').vmGrid.vmName]",
+            "targetresourcegroupName": "[steps('virtualMachines').vmresourcegoupName]",
             "phoneNumber": "[steps('ContactInfo').smstextbox]",
             "emailAddress": "[steps('ContactInfo').mailtextbox]"
         }
