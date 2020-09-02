@@ -12,19 +12,10 @@
                 "description": "Managed Application name"
             }
         },
-        "storageAccountType": {
-      "type": "string",
-      "defaultValue": "Standard_LRS",
-      "allowedValues": [
-        "Standard_LRS",
-        "Standard_GRS",
-        "Standard_ZRS",
-        "Premium_LRS"
-      ],
-      "metadata": {
-        "description": "Storage Account type"
-      }
-    },
+        "definitionStorageAccountName":{
+            "type": "string"
+        },
+
         "definitionStorageResourceID": {
             "type": "string",
             "metadata": {
@@ -40,6 +31,8 @@
         }
     },
     "variables": {
+        "definitionStorageResourceID": "[resourceId('Microsoft.Storage/storageAccounts/', parameters('definitionStorageAccountName'))]",
+
         "lockLevel": "None",
         "description": "Sample Managed application definition",
         "displayName": "Sample Managed application definition",
@@ -53,14 +46,14 @@
         {
             "type": "Microsoft.Solutions/applicationDefinitions",
             "apiVersion": "2019-07-01",
-            "name": "[variables('managedApplicationDefinitionName')]",
+            "name": "[parameters('applicationName')]",
             "location": "[parameters('location')]",
             "properties": {
                 "lockLevel": "[variables('lockLevel')]",
                 "description": "[variables('description')]",
                 "displayName": "[variables('displayName')]",
-                "packageFileUri": "[variables('packageFileUri')]",
-                "storageAccountId": "[variables('defLocation')]"
+                "packageFileUri": "[parameters('_artifactsLocation')]",
+                "storageAccountId": "[variables('definitionStorageResourceID')]"
             }
         }
     ],
