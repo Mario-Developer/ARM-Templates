@@ -9,6 +9,19 @@
                 "description": "Managed Application name"
             }
         },
+        "storageAccountType": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_GRS",
+                "Standard_ZRS",
+                "Premium_LRS"
+            ],
+            "metadata": {
+                "description": "Storage Account type"
+            }
+        },
         "definitionStorageResourceID": {
             "type": "string",
             "metadata": {
@@ -25,7 +38,6 @@
     },
     "variables": {
         "location": "[resourceGroup().location]",
-        "storageAccountType": "Standard_LRS",
         "lockLevel": "None",
         "description": "Solución de Alertamiento, Monitoreo y Backup de máquinas virtuales",
         "displayName": "AMB-Solution",
@@ -33,13 +45,13 @@
         "packageFileUri": "[parameters('_artifactsLocation')]",
         "defLocation": "[resourceId('Microsoft.Storage/storageAccounts/', parameters('definitionStorageResourceID'))]",
         "managedResourceGroupId": "[concat(subscription().id,'/resourceGroups/', concat(parameters('applicationName'),'_managed'))]",
-        "applicationDefinitionResourceId": "[resourceId('Microsoft.Solutions/applicationDefinitions', parameters('applicationName'))]"
+        "applicationDefinitionResourceId": "[resourceId('Microsoft.Solutions/applicationDefinitions',variables('managedApplicationDefinitionName'))]"
     },
     "resources": [
         {
             "type": "Microsoft.Solutions/applicationDefinitions",
             "apiVersion": "2019-07-01",
-            "name": "[parameters('applicationName')]",
+            "name": "[variables('managedApplicationDefinitionName')]",
             "location": "[variables('location')]",
             "properties": {
                 "lockLevel": "[variables('lockLevel')]",
