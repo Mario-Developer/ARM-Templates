@@ -1,27 +1,30 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]"
+        },
         "applicationName": {
             "type": "string",
-            "defaultValue": "Solution-AMB",
             "metadata": {
                 "description": "Managed Application name"
             }
         },
         "storageAccountType": {
-            "type": "string",
-            "defaultValue": "Standard_LRS",
-            "allowedValues": [
-                "Standard_LRS",
-                "Standard_GRS",
-                "Standard_ZRS",
-                "Premium_LRS"
-            ],
-            "metadata": {
-                "description": "Storage Account type"
-            }
-        },
+      "type": "string",
+      "defaultValue": "Standard_LRS",
+      "allowedValues": [
+        "Standard_LRS",
+        "Standard_GRS",
+        "Standard_ZRS",
+        "Premium_LRS"
+      ],
+      "metadata": {
+        "description": "Storage Account type"
+      }
+    },
         "definitionStorageResourceID": {
             "type": "string",
             "metadata": {
@@ -37,13 +40,12 @@
         }
     },
     "variables": {
-        "location": "[resourceGroup().location]",
         "lockLevel": "None",
-        "description": "Solución de Alertamiento, Monitoreo y Backup de máquinas virtuales",
-        "displayName": "AMB-Solution",
+        "description": "Sample Managed application definition",
+        "displayName": "Sample Managed application definition",
         "managedApplicationDefinitionName": "[parameters('applicationName')]",
         "packageFileUri": "[parameters('_artifactsLocation')]",
-        "defLocation": "[resourceId('Microsoft.Storage/storageAccounts/', parameters('definitionStorageResourceID'))]",
+        "defLocation": "[parameters('definitionStorageResourceID')]",
         "managedResourceGroupId": "[concat(subscription().id,'/resourceGroups/', concat(parameters('applicationName'),'_managed'))]",
         "applicationDefinitionResourceId": "[resourceId('Microsoft.Solutions/applicationDefinitions',variables('managedApplicationDefinitionName'))]"
     },
@@ -52,7 +54,7 @@
             "type": "Microsoft.Solutions/applicationDefinitions",
             "apiVersion": "2019-07-01",
             "name": "[variables('managedApplicationDefinitionName')]",
-            "location": "[variables('location')]",
+            "location": "[parameters('location')]",
             "properties": {
                 "lockLevel": "[variables('lockLevel')]",
                 "description": "[variables('description')]",
