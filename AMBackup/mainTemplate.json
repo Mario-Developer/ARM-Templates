@@ -196,6 +196,7 @@
                 "name": "[variables('workspaceName')]",
                 "storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts/', variables('storageaccountName'))]",
                 "workspaceId": "[resourceId('microsoft.operationalinsights/workspaces/', variables('workspaceName'))]",
+                "logAnalyticsDestinationType": "Dedicated",
                 "logs": [
                     {
                         "category": "CoreAzureBackup",
@@ -343,7 +344,7 @@
                 "description": "Sample log query alert",
                 "enabled": "true",
                 "source": {
-                    "query": "AddonAzureBackupJobs | summarize arg_max(TimeGenerated,*) by JobUniqueId | where JobStatus == \"Completed\"",
+                    "query": "AddonAzureBackupJobs | summarize arg_max(TimeGenerated,*) by JobUniqueId | where JobStatus == \"Failed\"",
                     "dataSourceId": "[resourceId('microsoft.operationalinsights/workspaces/', variables('workspaceName'))]",
                     "queryType":"ResultCount"
                 },
