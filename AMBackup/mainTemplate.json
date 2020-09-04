@@ -19,7 +19,7 @@
         },
         "targetresourcegroupName": {
             "type": "string",
-            "defaultValue": "JSON-TEMPLATES",
+            "defaultValue": "[resourceGroup().name]",
             "metadata": {
                 "description": "Nombre del grupo de resursos en donde se encuentran las máquinas virtuales"
             }
