@@ -3,9 +3,9 @@
     "contentVersion": "1.0.0.0",
     "parameters": {},
     "variables": {
-      "vaultName": "ambVAult",
+      "vaultName": "[concat('Vault', uniqueString(resourceGroup().id))]",
       "location": "[resourceGroup().location]",
-      "LAWorkspaceName": "AMBWorkspace",
+      "LAWorkspaceName": "[concat('WS', uniqueString(resourceGroup().id))]",
       "storageAccountName": "[concat('storage', uniqueString(resourceGroup().id))]"
     },
     "resources": [
@@ -50,7 +50,7 @@
           "name": "[variables('LAWorkspaceName')]",
           "storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
           "workspaceId": "[resourceId('microsoft.operationalinsights/workspaces/', variables('LAWorkspaceName'))]",
-          "logAnalyticsDestinationType": "ResourceSpecific",
+          "logAnalyticsDestinationType": "Dedicated",
           "logs": [
             {
                         "category": "CoreAzureBackup",
