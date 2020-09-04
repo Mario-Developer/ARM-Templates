@@ -1,23 +1,10 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {
-      "vaultName": {
-        "type": "string",
-        "defaultValue": "DiagnosticVault",
-        "metadata": {
-          "description": "Name of the Vault"
-        }
-      },
-      "location": {
-        "type": "string",
-        "defaultValue": "[resourceGroup().location]",
-        "metadata": {
-          "description": "Location for all resources."
-        }
-      }
-    },
+    "parameters": {},
     "variables": {
+      "vaultName": "ambVAult",
+      "location": "[resourceGroup().location]",
       "LAWorkspaceName": "AMBWorkspace",
       "storageAccountName": "ambstorageaccount"
     },
@@ -25,8 +12,8 @@
       {
         "type": "Microsoft.RecoveryServices/vaults",
         "apiVersion": "2018-01-10",
-        "name": "[parameters('vaultName')]",
-        "location": "[parameters('location')]",
+        "name": "[variables('vaultName')]",
+        "location": "[variables('location')]",
         "sku": {
           "name": "RS0",
           "tier": "Standard"
@@ -34,7 +21,7 @@
         "properties": {}
       },
       {
-          "apiVersion": "2015-11-01-preview",
+        "apiVersion": "2015-11-01-preview",
         "type": "Microsoft.OperationalInsights/workspaces",
         "name": "[variables('LAWorkspaceName')]",
         "location": "East US",
@@ -45,10 +32,10 @@
         }
       },
       {
-          "apiVersion": "2017-06-01",
+        "apiVersion": "2017-06-01",
         "type": "Microsoft.Storage/storageAccounts",
         "name": "[variables('storageAccountName')]",
-        "location": "[parameters('location')]",
+        "location": "[variables('location')]",
         "sku": {
           "name": "Standard_LRS"
         },
@@ -56,27 +43,60 @@
         "properties": {}
       },
       {
-          "apiVersion": "2017-05-01-preview",
+        "apiVersion": "2017-05-01-preview",
         "type": "Microsoft.RecoveryServices/vaults/providers/diagnosticSettings",
-        "name": "[concat(parameters('vaultName'), '/microsoft.insights/', variables('LAWorkspaceName'))]",
+        "name": "[concat(variables('vaultName'), '/microsoft.insights/', variables('LAWorkspaceName'))]",
         "properties": {
           "name": "[variables('LAWorkspaceName')]",
           "storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
           "workspaceId": "[resourceId('microsoft.operationalinsights/workspaces/', variables('LAWorkspaceName'))]",
+          "logAnalyticsDestinationType": "ResourceSpecific",
           "logs": [
             {
-              "category": "AzureBackupReport",
-              "enabled": true,
-              "retentionPolicy": {
-                "days": 0,
-                "enabled": false
-              }
-            }
+                        "category": "CoreAzureBackup",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 60,
+                            "enabled": true
+                        }
+                    },
+                    {
+                        "category": "AddonAzureBackupJobs",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 60,
+                            "enabled": true
+                        }
+                    },
+                    {
+                        "category": "AddonAzureBackupAlerts",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 60,
+                            "enabled": true
+                        }
+                    },
+                    {
+                        "category": "AddonAzureBackupPolicy",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 60,
+                            "enabled": true
+                        }
+                    },
+                    {
+                        "category": "AddonAzureBackupStorage",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 60,
+                            "enabled": true
+                        }
+                    }
           ],
           "metrics": []
         },
         "dependsOn": [
-          "[resourceId('Microsoft.RecoveryServices/vaults/', parameters('vaultName'))]",
+          "[resourceId('Microsoft.RecoveryServices/vaults/', variables('vaultName'))]",
           "[resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
           "[resourceId('microsoft.operationalinsights/workspaces/', variables('LAWorkspaceName'))]"
         ]
