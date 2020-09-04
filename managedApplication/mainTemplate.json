@@ -3,20 +3,6 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "VirtualMachines": {
-            "type": "array",
-            "defaultValue": [
-                {
-                    "vmName": "JSON-VM2"
-                },
-                {
-                    "vmName": "JSON-VML"
-                }
-            ],
-            "metadata": {
-                "description": "Arreglo de Máquinas Virtuales Azure. e.g. [\"vm1\",\"vm2\",\"vm3\"]"
-            }
-        },
         "phoneNumber": {
             "type": "string",
             "defaultValue": "",

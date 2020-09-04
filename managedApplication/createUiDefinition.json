@@ -7,18 +7,6 @@
         "basics": [],
         "steps": [
             {
-                "name": "vm00",
-                "label": "Máquinas Virtuales",
-                "elements": [
-                    {
-                        "name": "vmtextbox",
-                        "type": "Microsoft.Common.TextBox",
-                        "label": "Máquina Virtual",
-                        "placeholder": "Máquina Virtual"
-                    }
-                ]
-            },
-            {
                 "name": "ContactInfo",
                 "label": "Información de Contacto",
                 "elements": [
@@ -41,60 +29,9 @@
                         } 
                     }
                 ]
-            },
-            {
-				"name": "vm01",
-				"label": "MV Resource Selector",
-				"elements":[
-					{
-						"name": "vmselector01",
-                		"type": "Microsoft.Solutions.ResourceSelector",
-                		"label": "Seleccione una máquina virtual",
-                		"resourceType": "Microsoft.Compute/virtualMachines",
-                		"options": {
-                    		"filter": {
-                       			"subscription": "onBasics",
-                        		"location": "onBasics"
-                    		}		
-                		}		
-					}
-				]
-            },
-            {
-                "name": "virtualMachines",
-                "label": "MV Editable Grid",
-                "elements": [
-                    {
-                        "name": "vmGrid",
-                        "type": "Microsoft.Common.EditableGrid",
-                        "label": "Máquinas Virtuales",
-                        "constraints":{
-                            "width": "Full",
-                            "rows":{
-                                "count":{
-                                    "min": 1,
-                                    "max": 10
-                                }
-                            },
-                            "columns":[
-                                {
-                                    "id": "vmName",
-                                    "header": "Máquina Virtual",
-                                    "width": "1fr",
-                                    "element":{
-                                        "name": "textbox",
-                                        "type": "Microsoft.Common.TextBox",
-                                        "placeholder": "Máquina Virtual"
-                                    }
-                                }
-                            ]
-                        }
-                    }   
-                ]
             }
         ],
         "outputs": {
-            "VirtualMachines": "[steps('virtualMachines').vmGrid.vmName]",
             "phoneNumber": "[steps('ContactInfo').smstextbox]",
             "emailAddress": "[steps('ContactInfo').mailtextbox]"
         }
