@@ -6,7 +6,7 @@
       "vaultName": "ambVAult",
       "location": "[resourceGroup().location]",
       "LAWorkspaceName": "AMBWorkspace",
-      "storageAccountName": "ambstorageaccount"
+      "storageAccountName": "[concat('storage', uniqueString(resourceGroup().id))]"
     },
     "resources": [
       {
